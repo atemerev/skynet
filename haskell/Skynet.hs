@@ -1,27 +1,33 @@
+-- | Results of the old vs. new code on a Core i7 Linux Laptop.
+--
+-- OLD Result: 499999500000 in 3.07968s
+-- NEW Result: 499999500000 in 1.140502s
+
+{-# LANGUAGE ViewPatterns #-}
+
 module Main (main) where
 
-import Control.Concurrent (forkIO)
-import Control.Concurrent.Chan (Chan, newChan, writeChan, readChan)
-import Control.Monad (forM_, replicateM)
-import Data.Time.Clock (getCurrentTime, diffUTCTime)
+import           Control.Applicative
+import           Control.Concurrent.Async
+import           Control.Monad            (forM)
+import           Data.Time.Clock          (diffUTCTime, getCurrentTime)
 
-skynet :: Chan Int -> Int -> Int -> Int -> IO ()
-skynet c num size div
-    | size == 1 = writeChan c num
-    | otherwise = do
-          rc <- newChan
-          forM_ [0..div-1] $ \i -> do
-              let subNum  = num + i * sizeDiv
-                  sizeDiv = size `quot` div
-              forkIO $ skynet rc subNum sizeDiv div
-          sum <- sum <$> replicateM div (readChan rc)
-          writeChan c sum
+supervisor :: Int -> Int -> Int -> IO Int
+supervisor n s d = wait =<< async (worker n s d)
+
+worker :: Int -> Int -> Int -> IO Int
+worker num size dv
+    | size == 1 = return num
+    | otherwise = sum <$> forM [0..dv-1] spawnChild
+  where
+    sizeDiv = size `quot` dv
+    subNum i = num + i * sizeDiv
+    spawnChild (subNum -> n) = supervisor n sizeDiv dv
 
 main :: IO ()
 main = do
-    c      <- newChan
     start  <- getCurrentTime
-    _      <- forkIO $ skynet c 0 1000000 10
-    result <- readChan c
+    result <- supervisor 0 1000000 10
     end    <- getCurrentTime
+
     putStrLn $ concat ["Result: ", show result, " in ", show (diffUTCTime end start)]

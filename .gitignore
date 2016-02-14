@@ -6,3 +6,5 @@ erlang/skynet.beam
 haskell/skynet.exe
 haskell/Skynet.hi
 haskell/Skynet.o
+crystal/.crystal
+crystal/skynet

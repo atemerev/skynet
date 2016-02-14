@@ -8,6 +8,7 @@ until reaching the root actor. (The answer should be 499999500000).
 ## Results (on my shitty Macbook 12" '2015, **Core M**, OS X): 
 
 - Scala/Akka: 33618 ms.
+- Haskell (GHC 7.10.3): 6181 ms.
 - Erlang (non-HIPE): 4414 ms.
 - Erlang (HIPE): 3999 ms.
 - Go: 979 ms.

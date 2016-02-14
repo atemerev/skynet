@@ -76,3 +76,11 @@ in `node-bluebird/` run `npm install` then `node skynet`
 Install FSharp Interactive
 
 Run fsi skynet.fsx, or run fsi and paste the code in (runs faster this way)
+
+### Crystal:
+
+Install [latest version of Crystal](http://crystal-lang.org/docs/installation/index.html).
+
+Go to `crystal/`
+`crystal build skynet.cr --release`
+`./skynet`

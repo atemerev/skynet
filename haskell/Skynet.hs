@@ -1,27 +1,33 @@
+-- Compile: ghc -threaded -rtsopts -O2 -o skynet Skynet.hs
+-- Run:     ./skynet +RTS -N8 -H7G -RTS
+-- Use system dependent -H (heap) and -N (cpus)
+
 module Main (main) where
 
-import Control.Concurrent (forkIO)
-import Control.Concurrent.Chan (Chan, newChan, writeChan, readChan)
-import Control.Monad (forM_, replicateM)
-import Data.Time.Clock (getCurrentTime, diffUTCTime)
+import Control.Concurrent.Async (async, wait)
+import Control.Monad            (forM, replicateM_, void)
+import Data.Time.Clock          (getCurrentTime, diffUTCTime)
 
-skynet :: Chan Int -> Int -> Int -> Int -> IO ()
-skynet c num size div
-    | size == 1 = writeChan c num
-    | otherwise = do
-          rc <- newChan
-          forM_ [0..div-1] $ \i -> do
-              let subNum  = num + i * sizeDiv
-                  sizeDiv = size `quot` div
-              forkIO $ skynet rc subNum sizeDiv div
-          sum <- sum <$> replicateM div (readChan rc)
-          writeChan c sum
+skynet :: Int -> Int -> Int -> IO Int
+skynet num size cnt
+  | size == 1 = return num
+  | otherwise = do
+      kids <- spawnNKids (cnt - 1)
+      rs   <- mapM wait kids
+      return (sum rs)
+ where
+   spawnKid i = async (skynet subNum sizeDiv cnt)
+     where subNum = num + i * sizeDiv
+           sizeDiv = size `quot` cnt
+   spawnNKids n = forM [0..n] spawnKid
 
-main :: IO ()
-main = do
-    c      <- newChan
+doRun :: IO ()
+doRun = do
     start  <- getCurrentTime
-    _      <- forkIO $ skynet c 0 1000000 10
-    result <- readChan c
+    t      <- async (skynet 0 1000000 10)
+    result <- wait t
     end    <- getCurrentTime
     putStrLn $ concat ["Result: ", show result, " in ", show (diffUTCTime end start)]
+
+main :: IO ()
+main = void (replicateM_ 10 doRun)

@@ -24,7 +24,11 @@ until reaching the root actor. (The answer should be 499999500000).
 - .NET Core: Async (8 threads) 290 ms / Sync (1 thread) 49 ms.
 - Node-bluebird (Promise) 285ms / 195ms (after warmup)
 - F# MailboxProcessor: 756ms (should be faster?..)
+<<<<<<< HEAD
 - Java: ?ms
+=======
+- .NET Full (TPL): 118 ms
+>>>>>>> upstream/master
 
 ## How to run
 
@@ -86,6 +90,10 @@ Install [latest version of Crystal](http://crystal-lang.org/docs/installation/in
 Go to `crystal/`
 `crystal build skynet.cr --release`
 `./skynet`
+
+### .NET/TPL
+
+Build the solution with VS2015. Windows only :(
 
 ### Java
 

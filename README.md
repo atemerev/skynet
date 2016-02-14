@@ -11,14 +11,14 @@ until reaching the root actor. (The answer should be 499999500000).
 - Erlang (non-HIPE): 4414 ms.
 - Erlang (HIPE): 3999 ms.
 - Go: 979 ms.
-- .NET Core: Async 650 ms / Sync 232 ms
+- .NET Core: Async (8 threads) 650 ms / Sync (1 thread) 232 ms
 
 ## Results (**i7-4770**, Win8.1): 
 
 - Scala/Akka: OOM :(
 - Erlang (non-HIPE): 1700 ms.
 - Go: 629 ms.
-- .NET Core: Async 230 ms / Sync 81 ms.
+- .NET Core: Async (8 threads) 230 ms / Sync (1 thread) 81 ms.
 
 ## How to run
 

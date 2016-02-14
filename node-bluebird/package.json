@@ -1,0 +1,14 @@
+{
+  "name": "skynet-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "skynet.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "spion",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.3.1"
+  }
+}

@@ -62,3 +62,9 @@ Go to `dnx/`
 Install the GHC compiler
 
 In `haskell/`, run `ghc -O2 -o skynet Skynet.hs` then `./skynet`
+
+### Node (bluebird)
+
+Install node.js
+
+in `node-bluebird/` run `npm install` then `node skynet`

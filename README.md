@@ -7,7 +7,7 @@ until reaching the root actor. (The answer should be 499999500000).
 
 ## Results (on my shitty Macbook 12" '2015, **Core M**, OS X): 
 
-- Scala/Akka: 33618 ms.
+- Scala/Akka: ? ms (somebody run this)
 - Haskell (GHC 7.10.3): 6181 ms.
 - Erlang (non-HIPE): 4414 ms.
 - Erlang (HIPE): 3999 ms.
@@ -16,7 +16,7 @@ until reaching the root actor. (The answer should be 499999500000).
 
 ## Results (**i7-4770**, Win8.1): 
 
-- Scala/Akka: OOM :(
+- Scala/Akka: 4419 ms
 - Haskell (GHC 7.10.3): 2820 ms.
 - Erlang (non-HIPE): 1700 ms.
 - Go: 629 ms.

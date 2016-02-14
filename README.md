@@ -24,11 +24,8 @@ until reaching the root actor. (The answer should be 499999500000).
 - .NET Core: Async (8 threads) 290 ms / Sync (1 thread) 49 ms.
 - Node-bluebird (Promise) 285ms / 195ms (after warmup)
 - F# MailboxProcessor: 756ms (should be faster?..)
-<<<<<<< HEAD
-- Java: ?ms
-=======
 - .NET Full (TPL): 118 ms
->>>>>>> upstream/master
+- Java: ?ms
 
 ## How to run
 

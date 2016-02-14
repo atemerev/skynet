@@ -1,6 +1,5 @@
 #!/usr/bin/env tclsh
 package require Tcl 8.6
-namespace path ::tcl::mathop
 
 coroutine gensym apply {{} {
     set i 0
@@ -16,9 +15,9 @@ proc skynet {num size div} {
         yield $num
     } else {
         set children {}
-        set childSize [/ $size $div]
+        set childSize [expr {$size / $div}]
         for {set i 0} {$i < $div} {incr i} {
-            set childNum [+ $num [* $i $childSize]]
+            set childNum [expr {$num + $i * $childSize}]
             set id [gensym]
             coroutine $id skynet $childNum $childSize $div
             lappend children $id

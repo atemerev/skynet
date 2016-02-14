@@ -85,3 +85,7 @@ Install [latest version of Crystal](http://crystal-lang.org/docs/installation/in
 Go to `crystal/`
 `crystal build skynet.cr --release`
 `./skynet`
+
+### .NET/TPL
+
+Build the solution with VS2015. Windows only :(

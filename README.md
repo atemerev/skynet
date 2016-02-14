@@ -39,4 +39,4 @@ In `erlang`, run `erl +P 2000000` (to raise process limit), then compile:
 
 Install the GHC compiler
 
-In `haskell/`, run `runhaskell Skynet.hs` or `ghc -o skynet Skynet.hs`
+In `haskell/`, run `ghc -O2 -o skynet Skynet.hs` then `./skynet`

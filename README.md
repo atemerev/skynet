@@ -44,3 +44,9 @@ Then, run:
 
 `dotnet restore` (first time)
 `dotnet run`
+
+### Haskell
+
+Install the GHC compiler
+
+In `haskell/`, run `ghc -O2 -o skynet Skynet.hs` then `./skynet`

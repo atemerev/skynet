@@ -12,7 +12,6 @@ import           Control.Concurrent.Async
 import           Data.Time.Clock          (diffUTCTime, getCurrentTime)
 
 worker :: Int -> Int -> Int -> IO Int
-{-# INLINE worker #-}
 worker num size dv
     | size == 1 = return num
     | otherwise = sum <$> mapConcurrently mkChild [0..dv-1]

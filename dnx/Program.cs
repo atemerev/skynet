@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;     
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 
@@ -11,26 +11,25 @@ namespace ActorBenchmark
         static void Main(string[] args)
         {
             long limit = 1000000;
-            Stopwatch sw = Stopwatch.StartNew();
+            DateTime dt = DateTime.Now;
             var x = skynet(0, limit, 10, false);
-            Console.WriteLine(x);
-            sw.Stop();
-            Console.WriteLine("Sync sec: {0:0.000}", sw.ElapsedMilliseconds * 0.001);
-            sw.Start();
+            x.Wait();
+            Console.WriteLine(x.Result);
+            DateTime dt2 = DateTime.Now;
+            Console.WriteLine("Sync sec: {0:0.000}", (dt2 - dt).TotalSeconds);
             var x2 = skynet(0, limit, 10, true);
-            Console.WriteLine(x);
-            sw.Stop();
-            Console.WriteLine("Async sec: {0:0.000}", sw.ElapsedMilliseconds * 0.001);
+            DateTime dt3 = DateTime.Now;
+            Console.WriteLine(x.Result);
+            Console.WriteLine("Sync sec: {0:0.000}", (dt3 - dt2).TotalSeconds);
             //Console.ReadLine();
         }
-        static long taskNum;
         static object taskLock = new object();
 
-        static long skynet(long num, long size, long div, bool async)
+        static Task<long> skynet(long num, long size, long div, bool async)
         {
             if (size == 1)
             {
-                return num;
+                return Task.FromResult(num);
             }
             else
             {
@@ -41,33 +40,33 @@ namespace ActorBenchmark
                     var sub_num = num + i * (size / div);
                     if (!async)
                     {
-                        sum += skynet(sub_num, size / div, div, false);
+                        sum += skynet(sub_num, size / div, div, false).Result;
                     }
                     else
                     {
-                        var task = Task.Factory.StartNew(() =>
-                        {
-                            //long ournum = 0;
-                            //lock (taskLock)
-                            //{
-                            //    ournum = taskNum++;
-                            //}                          
-                            //Console.WriteLine("EXE {0}", ournum);
-                            return skynet(sub_num, size / div, div, true);
-                        });
+                        var task = skynet(sub_num, size / div, div, true);
                         tasks.Add(task);
                     }
                 }
-                if (async)
+                if (!async)
                 {
-                    Task.WaitAll(tasks.ToArray());
-                    foreach (var t in tasks)
-                    {
-                        sum += t.Result;
-                    }
+                    return Task.FromResult(sum);
                 }
-                return sum;
+                else
+                {
+                    return Task.WhenAll(tasks).ContinueWith(skynetAggregator);
+                }
             }
+        }
+
+        static long skynetAggregator(Task<long[]> children)
+        {
+            long sumAsync = 0;
+            foreach (var x in children.Result)
+            {
+                sumAsync += x;
+            }
+            return sumAsync;
         }
     }
 }

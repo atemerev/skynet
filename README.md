@@ -11,6 +11,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - Erlang (non-HIPE): 4414 ms.
 - Erlang (HIPE): 3999 ms.
 - Go: 979 ms.
+- .NET Core: 250 ms.
 
 ## How to run
 
@@ -38,3 +39,8 @@ In `erlang`, run `erl +P 2000000` (to raise process limit), then compile:
 Then, run:
 
 `skynet:skynet(1000000,10).`
+
+### .NET Core: 
+
+`dotnet restore` (first time)
+`dotnet run`

@@ -20,7 +20,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - Haskell (GHC 7.10.3): 2820 ms.
 - Erlang (non-HIPE): 1700 ms.
 - Go: 629 ms.
-- .NET Core: Async (8 threads) 230 ms / Sync (1 thread) 81 ms.
+- .NET Core: Async (8 threads) 290 ms / Sync (1 thread) 49 ms.
 
 ## How to run
 

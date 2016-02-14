@@ -35,6 +35,8 @@ In `erlang`, run `erl +P 2000000` (to raise process limit), then compile:
 - For non-HIPE: `c(skynet).`
 - For HIPE (if supported on your system): `hipe:c(skynet).`
 
-Then, run:
+### Haskell
 
-`skynet:skynet(1000000,10).`
+Install the GHC compiler
+
+In `haskell/`, run `runhaskell Skynet.hs` or `ghc -o skynet Skynet.hs`

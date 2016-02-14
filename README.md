@@ -21,6 +21,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - Erlang (non-HIPE): 1700 ms.
 - Go: 629 ms.
 - .NET Core: Async (8 threads) 290 ms / Sync (1 thread) 49 ms.
+- Node-bluebird (Promise) 285ms / 195ms (after warmup)
 
 ## How to run
 

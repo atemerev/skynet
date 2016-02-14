@@ -3,7 +3,7 @@ package main
 import "fmt"
 import "time"
 
-func skynet(c chan int, num int, size int, div int) {
+func skynet(c chan int, num, size, div int) {
 	if size == 1 {
 		c <- num
 	} else {

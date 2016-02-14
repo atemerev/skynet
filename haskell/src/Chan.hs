@@ -1,4 +1,4 @@
-module Main (main) where
+module Chan (run) where
 
 import Control.Concurrent (forkIO)
 import Control.Concurrent.Chan (Chan, newChan, writeChan, readChan)
@@ -14,14 +14,14 @@ skynet c num size div
               let subNum  = num + i * sizeDiv
                   sizeDiv = size `quot` div
               forkIO $ skynet rc subNum sizeDiv div
-          sum <- sum <$> replicateM div (readChan rc)
-          writeChan c sum
+          sum' <- sum <$> replicateM div (readChan rc)
+          writeChan c sum'
 
-main :: IO ()
-main = do
-    c      <- newChan
-    start  <- getCurrentTime
-    _      <- forkIO $ skynet c 0 1000000 10
+run :: IO ()
+run = do
+    c <- newChan
+    -- start  <- getCurrentTime
+    _      <- forkIO $ skynet c 1 1000000 10
     result <- readChan c
-    end    <- getCurrentTime
-    putStrLn $ concat ["Result: ", show result, " in ", show (diffUTCTime end start)]
+    putStrLn $ "Result: " ++ show result
+    -- end    <- getCurrentTime

@@ -61,9 +61,9 @@ Go to `dnx/`
 
 ### Haskell
 
-Install the GHC compiler
+Install [Stack](http://haskellstack.org)
 
-In `haskell/`, run `ghc -O2 -o skynet Skynet.hs` then `./skynet`
+In `haskell/`, run `stack build && stack exec skynet +RTS -N`
 
 ### Node (bluebird)
 

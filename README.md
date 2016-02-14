@@ -22,6 +22,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - Go: 629 ms.
 - .NET Core: Async (8 threads) 290 ms / Sync (1 thread) 49 ms.
 - Node-bluebird (Promise) 285ms / 195ms (after warmup)
+- F# MailboxProcessor: 756ms (should be faster?..)
 
 ## How to run
 
@@ -69,3 +70,9 @@ In `haskell/`, run `ghc -O2 -o skynet Skynet.hs` then `./skynet`
 Install node.js
 
 in `node-bluebird/` run `npm install` then `node skynet`
+
+### FSharp
+
+Install FSharp Interactive
+
+Run fsi skynet.fsx, or run fsi and paste the code in (runs faster this way)

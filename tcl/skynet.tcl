@@ -12,7 +12,7 @@ coroutine gensym apply {{} {
 proc skynet {num size div} {
     yield
     if {$size == 1} {
-        yield $num
+        return $num
     } else {
         set children {}
         set childSize [expr {$size / $div}]
@@ -26,7 +26,7 @@ proc skynet {num size div} {
         foreach child $children {
             incr sum [$child]
         }
-        yield $sum
+        return $sum
     }
 }
 

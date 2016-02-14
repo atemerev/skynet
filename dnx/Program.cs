@@ -10,19 +10,24 @@ namespace ActorBenchmark
     {
         static void Main(string[] args)
         {
+            Stopwatch sw = new Stopwatch();
             long limit = 1000000;
-            DateTime dt = DateTime.Now;
+
+            sw.Start();
             var x = skynet(0, limit, 10, false);
             x.Wait();
+            sw.Stop();
+
             Console.WriteLine(x.Result);
-            DateTime dt2 = DateTime.Now;
-            Console.WriteLine("Sync sec: {0:0.000}", (dt2 - dt).TotalSeconds);
+            Console.WriteLine("Sync sec: {0:0.000}", sw.ElapsedMilliseconds / 1000.0f);
+
+            sw.Restart();
             var x2 = skynet(0, limit, 10, true);
             x2.Wait();
-            DateTime dt3 = DateTime.Now;
+            sw.Stop();
+
             Console.WriteLine(x2.Result);
-            Console.WriteLine("Async sec: {0:0.000}", (dt3 - dt2).TotalSeconds);
-            //Console.ReadLine();
+            Console.WriteLine("Async sec: {0:0.000}", sw.ElapsedMilliseconds / 1000.0f);
         }
         static object taskLock = new object();
 
@@ -30,7 +35,7 @@ namespace ActorBenchmark
         {
             if (size == 1)
             {
-                return Task.FromResult(num);
+                return Task.Run(() => num);
             }
             else
             {

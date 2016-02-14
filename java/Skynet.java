@@ -30,7 +30,9 @@ public class Skynet extends RecursiveAction {
 
             invokeAll(subtasks);
 
-            result = subtasks.stream().mapToLong(Skynet::result).sum();
+            for (Skynet task : subtasks) {
+                result += task.result();
+            }
         }
     }
 
@@ -38,16 +40,16 @@ public class Skynet extends RecursiveAction {
         return result;
     }
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
+    public static void main(String[] args) {
         int limit = 1_000_000;
         ForkJoinPool pool = new ForkJoinPool();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 25; i++) {
             long start = System.nanoTime();
             Skynet sky = new Skynet(0, limit, 10);
             pool.invoke(sky);
-            System.out.println("Result: " + sky.result());
             long end = System.nanoTime();
+            System.out.println("Result: " + sky.result());
             System.out.printf("Took: %.2fms%n", (end - start) / 1000000.0);
         }
     }

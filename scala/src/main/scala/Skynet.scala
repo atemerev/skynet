@@ -1,34 +1,59 @@
-import akka.actor.{ActorSystem, Props, ActorRef, Actor}
+import akka.actor.{ ActorSystem, Props, ActorRef, Actor }
 
-class Skynet(parent: ActorRef, num: Int, size: Int, div: Int) extends Actor {
+object Skynet {
+  val props = Props(new Skynet)
+  case class Start(level: Int, num: Long)
+}
 
-  var received = 0
-  var total = 0L
+class Skynet extends Actor {
+  import Skynet._
 
-  size match {
-    case 1 => parent ! num.toLong
-    case x if x > 1 => (0 until div).map(mkChild)
+  var todo = 10
+  var count = 0L
+
+  def receive = {
+    case Start(level, num) =>
+      if (level == 1) {
+        context.parent ! num
+        context.stop(self)
+      } else {
+        val start = num * 10
+        (0 to 9) foreach (i => context.actorOf(props) ! Start(level - 1, start + i))
+      }
+    case l: Long =>
+      todo -= 1
+      count += l
+      if (todo == 0) {
+        context.parent ! count
+        context.stop(self)
+      }
   }
-
-  override def receive = {
-    case x: Long => received += 1; total += x; if (div == received) parent ! total
-  }
-
-  private def mkChild(n: Int): ActorRef = context.system.actorOf(Props(classOf[Skynet], self, num + n * (size / div), size / div, div))
 }
 
 class Root extends Actor {
-
-  val startTime = System.currentTimeMillis()
-  context.system.actorOf(Props(classOf[Skynet], self, 0, 1000000, 10))
+  import Root._
 
   override def receive = {
+    case Run(n) => startRun(n)
+  }
+
+  def startRun(n: Int): Unit = {
+    val start = System.nanoTime()
+    context.actorOf(Skynet.props) ! Skynet.Start(7, 0)
+    context.become(waiting(n - 1, start))
+  }
+
+  def waiting(n: Int, start: Long): Receive = {
     case x: Long =>
-      val diffMs = System.currentTimeMillis() - startTime
+      val diffMs = (System.nanoTime() - start) / 1000000
       println(s"Result: $x in $diffMs ms.")
+      if (n == 0) context.system.terminate()
+      else startRun(n)
   }
 }
 
 object Root extends App {
-  ActorSystem.create("main").actorOf(Props[Root])
+  case class Run(num: Int)
+
+  ActorSystem("main").actorOf(Props[Root]) ! Run(3)
 }

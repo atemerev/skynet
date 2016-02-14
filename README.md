@@ -84,3 +84,10 @@ Install [latest version of Crystal](http://crystal-lang.org/docs/installation/in
 Go to `crystal/`
 `crystal build skynet.cr --release`
 `./skynet`
+
+### Java
+
+Install the Java 8 SDK.
+
+Go to `java/`
+`./gradlew :run`

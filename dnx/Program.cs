@@ -18,8 +18,9 @@ namespace ActorBenchmark
             DateTime dt2 = DateTime.Now;
             Console.WriteLine("Sync sec: {0:0.000}", (dt2 - dt).TotalSeconds);
             var x2 = skynet(0, limit, 10, true);
+            x2.Wait();
             DateTime dt3 = DateTime.Now;
-            Console.WriteLine(x.Result);
+            Console.WriteLine(x2.Result);
             Console.WriteLine("Async sec: {0:0.000}", (dt3 - dt2).TotalSeconds);
             //Console.ReadLine();
         }

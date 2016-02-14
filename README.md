@@ -16,7 +16,7 @@ until reaching the root actor. (The answer should be 499999500000).
 ## Results (i7-4770, Win8.1): 
 
 - Go: 629 ms.
-- .NET Core: 250 ms
+- .NET Core: 230 ms
 
 ## How to run
 

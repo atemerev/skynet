@@ -67,4 +67,5 @@ In `haskell/`, run `ghc -O2 -o skynet Skynet.hs` then `./skynet`
 ### FSharp
 
 Install FSharp Interactive
+
 Run fsi skynet.fsx, or run fsi and paste the code in (runs faster this way)

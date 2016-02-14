@@ -20,6 +20,7 @@ executable skynet
   other-modules:       Chan
                        Parallel
   build-depends:       base >= 4.7 && < 5
+                     , async
                      , criterion
                      , parallel
                      , stm

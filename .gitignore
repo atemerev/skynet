@@ -6,5 +6,9 @@ erlang/skynet.beam
 haskell/skynet.exe
 haskell/Skynet.hi
 haskell/Skynet.o
+dotnet-full/bin/*
+dotnet-full/obj/*
 crystal/.crystal
 crystal/skynet
+dotnet-full/packages/*
+.vs

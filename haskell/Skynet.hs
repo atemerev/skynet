@@ -1,8 +1,6 @@
 -- | Results of the old vs. new code on a Core i7 Linux Laptop.
 --
--- Compile w/ `ghc -O skynet.hs` for optimized code.
---
--- OLD Result: 499999500000 in 3.07968s
+-- OLD Result: 499999500000 in 2.57968s
 -- NEW Result: 499999500000 in 0.617s
 
 {-# LANGUAGE ViewPatterns #-}

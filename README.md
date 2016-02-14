@@ -13,6 +13,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - Erlang (HIPE): 3999 ms.
 - Go: 979 ms.
 - .NET Core: Async (8 threads) 650 ms / Sync (1 thread) 232 ms
+- Java: ?ms.
 
 ## Results (**i7-4770**, Win8.1): 
 
@@ -23,6 +24,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - .NET Core: Async (8 threads) 290 ms / Sync (1 thread) 49 ms.
 - Node-bluebird (Promise) 285ms / 195ms (after warmup)
 - F# MailboxProcessor: 756ms (should be faster?..)
+- Java: ?ms
 
 ## How to run
 
@@ -84,3 +86,9 @@ Install [latest version of Crystal](http://crystal-lang.org/docs/installation/in
 Go to `crystal/`
 `crystal build skynet.cr --release`
 `./skynet`
+
+### Java
+
+Install a 1.8 JDK
+
+in `java/` run `javac Skynet.java` then `java Skynet`

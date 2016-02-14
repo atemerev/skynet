@@ -3,12 +3,12 @@ package main
 import "fmt"
 import "time"
 
-func skynet(c chan int, num int, size int, div int) {
+func skynet(c chan int64, num int, size int, div int) {
     if (size == 1) {
-        c <- num
+        c <- int64(num)
     } else {
-        rc := make(chan int)
-        sum := 0
+        rc := make(chan int64)
+        sum := int64(0)
         for i := 0; i < div; i++ {
             sub_num := num + i * (size / div)
             go skynet(rc, sub_num, size / div, div)
@@ -21,10 +21,11 @@ func skynet(c chan int, num int, size int, div int) {
 }
 
 func main() {
-    c := make(chan int)
-    start := time.Now().UnixNano() / 1000000 
+    c := make(chan int64)
+    start := time.Now().UnixNano() / 1000000
     go skynet(c, 0, 1000000, 10)
     result := <-c
     end := time.Now().UnixNano() / 1000000
     fmt.Printf("Result: %d in %d ms.\n", result, end - start)
 }
+

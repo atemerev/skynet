@@ -25,7 +25,7 @@ namespace ActorBenchmark
             var x2 = skynet(0, limit, 10, true);
             x2.Wait();
             sw.Stop();
-            
+
             Console.WriteLine(x2.Result);
             Console.WriteLine("Async sec: {0:0.000}", sw.ElapsedMilliseconds / 1000.0f);
         }
@@ -35,7 +35,7 @@ namespace ActorBenchmark
         {
             if (size == 1)
             {
-                return Task.FromResult(num);
+                return Task.Run(() => num);
             }
             else
             {

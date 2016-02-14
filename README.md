@@ -21,6 +21,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - Erlang (non-HIPE): 1700 ms.
 - Go: 629 ms.
 - .NET Core: Async (8 threads) 290 ms / Sync (1 thread) 49 ms.
+- F# MailboxProcessor: 261 ms
 
 ## How to run
 
@@ -62,3 +63,8 @@ Go to `dnx/`
 Install the GHC compiler
 
 In `haskell/`, run `ghc -O2 -o skynet Skynet.hs` then `./skynet`
+
+### FSharp
+
+Install FSharp Interactive
+Run fsi skynet.fsx, or run fsi and paste the code in (runs faster this way)

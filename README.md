@@ -47,5 +47,8 @@ Then, run:
 
 ### .NET Core: 
 
-`dotnet restore` (first time)
+Install latest version of .NET Core
+
+Go to `dnx/`  
+`dotnet restore` (first time)  
 `dotnet run`

@@ -1,8 +1,3 @@
--- | Results of the old vs. new code on a Core i7 Linux Laptop.
---
--- OLD Result: 499999500000 in 2.57968s
--- NEW Result: 499999500000 in 0.617s
-
 {-# LANGUAGE ViewPatterns #-}
 
 module Main (main) where
@@ -23,7 +18,7 @@ worker num size dv
 main :: IO ()
 main = do
     start  <- getCurrentTime
-    result <- worker 0 1000000 10
+    result <- wait =<< async (worker 0 1000000 10)
     end    <- getCurrentTime
 
     putStrLn $ concat ["Result: ", show result, " in ", show (diffUTCTime end start)]

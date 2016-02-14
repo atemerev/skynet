@@ -85,3 +85,15 @@ Install [latest version of Crystal](http://crystal-lang.org/docs/installation/in
 Go to `crystal/`
 `crystal build skynet.cr --release`
 `./skynet`
+
+### OCaml
+
+Uses [Lwt](http://ocsigen.org/lwt/).
+A direct version is also included.
+
+Install OCaml + findlib + lwt (with [opam](https://opam.ocaml.org/): `opam install lwt`)
+
+```
+ocamlfind opt -package lwt.unix -linkpkg skynet.ml -o skynet
+./skynet
+```

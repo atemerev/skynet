@@ -16,10 +16,9 @@ skynet num size cnt
       rs   <- mapM wait kids
       return (sum rs)
  where
-   spawnKid i = do
-     let subNum = num + i * sizeDiv
-         sizeDiv = size `quot` cnt
-     async (skynet subNum sizeDiv cnt)
+   spawnKid i = async (skynet subNum sizeDiv cnt)
+     where subNum = num + i * sizeDiv
+           sizeDiv = size `quot` cnt
    spawnNKids n = forM [0..n] spawnKid
 
 doRun :: IO ()

@@ -1,2 +1,5 @@
 dnx/bin/*
 dnx/obj/*
+scala/project/target/*
+scala/target/*
+erlang/skynet.beam

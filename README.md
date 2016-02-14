@@ -5,13 +5,20 @@ more actors, etc. until one million actors are created on the final level. Then,
 back its ordinal number (from 0 to 999999), which are summed on the previous level and sent back upstream,
 until reaching the root actor. (The answer should be 499999500000).
 
-## Results (on my shitty Macbook 12" '2015): 
+## Results (on my shitty Macbook 12" '2015, **Core M**, OS X): 
 
 - Scala/Akka: 33618 ms.
 - Erlang (non-HIPE): 4414 ms.
 - Erlang (HIPE): 3999 ms.
 - Go: 979 ms.
-- .NET Core: 250 ms.
+- .NET Core: Async (8 threads) 650 ms / Sync (1 thread) 232 ms
+
+## Results (**i7-4770**, Win8.1): 
+
+- Scala/Akka: OOM :(
+- Erlang (non-HIPE): 1700 ms.
+- Go: 629 ms.
+- .NET Core: Async (8 threads) 230 ms / Sync (1 thread) 81 ms.
 
 ## How to run
 
@@ -42,7 +49,10 @@ Then, run:
 
 ### .NET Core: 
 
-`dotnet restore` (first time)
+Install latest version of .NET Core
+
+Go to `dnx/`  
+`dotnet restore` (first time)  
 `dotnet run`
 
 ### Haskell

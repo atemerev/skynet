@@ -7,6 +7,5 @@ import qualified Parallel
 
 main :: IO ()
 main = defaultMain
-  [ bench "chan" $ whnfIO Chan.run
-  , bench "parallel" $ whnfIO Parallel.run
+  [ bench "parallel" $ whnfIO Parallel.run
   ]

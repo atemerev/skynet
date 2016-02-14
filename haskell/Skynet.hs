@@ -9,25 +9,22 @@ module Main (main) where
 
 import           Control.Applicative
 import           Control.Concurrent.Async
-import           Control.Monad            (forM)
 import           Data.Time.Clock          (diffUTCTime, getCurrentTime)
 
-supervisor :: Int -> Int -> Int -> IO Int
-supervisor n s d = wait =<< async (worker n s d)
-
 worker :: Int -> Int -> Int -> IO Int
+{-# INLINE worker #-}
 worker num size dv
     | size == 1 = return num
-    | otherwise = sum <$> forM [0..dv-1] spawnChild
+    | otherwise = sum <$> mapConcurrently mkChild [0..dv-1]
   where
     sizeDiv = size `quot` dv
     subNum i = num + i * sizeDiv
-    spawnChild (subNum -> n) = supervisor n sizeDiv dv
+    mkChild (subNum -> n) = worker n sizeDiv dv
 
 main :: IO ()
 main = do
     start  <- getCurrentTime
-    result <- supervisor 0 1000000 10
+    result <- worker 0 1000000 10
     end    <- getCurrentTime
 
     putStrLn $ concat ["Result: ", show result, " in ", show (diffUTCTime end start)]

@@ -3,10 +3,6 @@ dnx/obj/*
 scala/project/target/*
 scala/target/*
 erlang/skynet.beam
-haskell/skynet.exe
-haskell/Skynet.hi
-haskell/Skynet.o
-haskell/.stack-work
 dotnet-full/bin/*
 dotnet-full/obj/*
 crystal/.crystal

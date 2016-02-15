@@ -5,7 +5,8 @@
     },
 
     "dependencies": {
-        "NETStandard.Library": "1.0.0-rc2-23811"
+        "NETStandard.Library": "1.0.0-rc2-23811",
+        "System.Threading.Tasks.Parallel": "4.0.1-rc2-23805"
     },
 
     "frameworks": {

@@ -4,7 +4,7 @@
 
 module Main (main) where
 
-import Control.Parallel.Strategies (parMap, rseq)
+import Control.Parallel.Strategies (evalList, rpar, using)
 import Control.Monad            (forM, replicateM_, void)
 import Data.Time.Clock          (getCurrentTime, diffUTCTime)
 
@@ -13,7 +13,7 @@ skynet levels children = sky levels 0
     where
         childnums = [0..children-1]
         sky 0   position = position
-        sky lvl position = sum $ parMap rseq (\cn -> sky (lvl-1) $ position*children + cn) childnums
+        sky lvl position = sum (map (\cn -> sky (lvl-1) $ position*children + cn) childnums `using` evalList rpar)
 
 doRun :: IO ()
 doRun = do

@@ -1,0 +1,70 @@
+Building via Mxx_ru
+===================
+
+To build SObjectizer and benchmarks it is necessary to use Ruby language and Mxx_ru tool.
+Install Ruby and then install Mxx_ru via RubyGems command:
+
+  gem install Mxx_ru
+
+SObjectizer can be downloaded as archive:
+
+  https://sourceforge.net/projects/sobjectizer/files/sobjectizer/SObjectizer%20Core%20v.5.5/
+
+  https://github.com/masterspline/SObjectizer/releases/tag/v5.5.15.2
+
+Directories so_5/ timertt/ and various_helpers_1/ have to be copied to this folder.
+
+It is expected following directory structure:
+
+../
+lib/
+so_5/
+timertt/
+various_helpers_1/
+build.rb
+CMakeLists.txt
+skynet1m.cpp
+skynet1m.rb
+skynet1m-tp_disp.cpp
+skynet1m-tp_disp.rb
+
+To build SObjectizer and benchmarks:
+
+  ruby build.rb
+
+skynet1m is implementation with one_thread dispatcher.
+skynet1m-tp_disp is implementation with thread_pool dispatcher.
+
+Please note that under Linux it could be necessary to define LD_LIBRARY_PATH
+environment variable. And the actual build command sequence under Linux could
+be as follows:
+
+  export LD_LIBRARY_PATH=.
+  ruby build.rb
+
+NOTE. If you do not specify MXX_RU_CPP_TOOLSET by youself then Mxx_ru will
+try to detect your C++ toolset automatically. If you want to use C++ compiler
+which is not default in your system please define MXX_RU_CPP_TOOLSET
+environment variable manually. It could look like:
+
+  export MXX_RU_CPP_TOOLSET="clang_linux compiler_name=clang++-3.5 linker_name=clang++-3.5"
+
+Building via CMake
+==================
+
+  mkdir cmake_build
+  cd cmake_build
+  cmake -DCMAKE_INSTALL_PREFIX=installed_files ../
+  make
+  make install
+
+Those commands will create all necessary Makefile, then build SObjectizer
+and benchmarks.
+
+To build SObjectizer under Windows by MS Visual Studio 2013 from command line:
+
+  mkdir cmake_build
+  cd cmake_build
+  cmake -DCMAKE_INSTALL_PREFIX=installed_files -G "Visual Studio 12 2013" ../
+  msbuild /m /t:Build /p:Configuration=Release ALL_BUILD.vcxproj
+  msbuild /m /t:Build /p:Configuration=Release INSTALL.vcxproj

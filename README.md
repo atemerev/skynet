@@ -1,11 +1,11 @@
 # Skynet 1M concurrency microbenchmark
 
-Creates an actor (goroutine, whatever), which spawns 10 new actors, each of them spawns 10 
+Creates an actor (goroutine, whatever), which spawns 10 new actors, each of them spawns 10
 more actors, etc. until one million actors are created on the final level. Then, each of them returns
 back its ordinal number (from 0 to 999999), which are summed on the previous level and sent back upstream,
 until reaching the root actor. (The answer should be 499999500000).
 
-## Results (on my shitty Macbook 12" '2015, **Core M**, OS X): 
+## Results (on my shitty Macbook 12" '2015, **Core M**, OS X):
 
 - Scala/Akka: ? ms (somebody run this)
 - Haskell (GHC 7.10.3): 6181 ms.
@@ -14,7 +14,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - Go: 979 ms.
 - .NET Core: Async (8 threads) 650 ms / Sync (1 thread) 232 ms
 
-## Results (**i7-4770**, Win8.1): 
+## Results (**i7-4770**, Win8.1):
 
 - Scala/Akka: 4419 ms
 - Haskell (GHC 7.10.3): 2820 ms.
@@ -29,7 +29,7 @@ until reaching the root actor. (The answer should be 499999500000).
 
 ### Scala/Akka
 
-Install latest Scala and SBT. 
+Install latest Scala and SBT.
 
 Go to `scala/`, then run `sbt`, then `compile`, then `run`.
 
@@ -52,12 +52,12 @@ Then, run:
 
 `skynet:skynet(1000000,10).`
 
-### .NET Core: 
+### .NET Core:
 
 Install latest version of .NET Core
 
-Go to `dnx/`  
-`dotnet restore` (first time)  
+Go to `dnx/`
+`dotnet restore` (first time)
 `dotnet run`
 
 ### Haskell
@@ -89,3 +89,9 @@ Go to `crystal/`
 ### .NET/TPL
 
 Build the solution with VS2015. Windows only :(
+
+### SObjectizer
+
+Go to `sobjectizer/`
+
+Follow the instructions into README

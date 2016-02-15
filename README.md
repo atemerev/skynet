@@ -25,13 +25,21 @@ until reaching the root actor. (The answer should be 499999500000).
 - F# MailboxProcessor: 756ms (should be faster?..)
 - .NET Full (TPL): 118 ms
 
+## Results (**i7-4771**, Ubuntu 15.10): 
+
+- Scala/Akka: 1700-2700 ms
+- Haskell (GHC 7.10.3): 41-44 ms
+- Erlang (non-HIPE): 700-1100 ms
+- Erlang (HIPE): 2100-3500 ms
+- Go: 200-224 ms
+
 ## How to run
 
 ### Scala/Akka
 
 Install latest Scala and SBT. 
 
-Go to `scala/`, then run `sbt`, then `compile`, then `run`.
+Go to `scala/`, then run `sbt compile run`.
 
 ### Go
 
@@ -62,9 +70,9 @@ Go to `dnx/`
 
 ### Haskell
 
-Install the GHC compiler
+Install [Stack](http://haskellstack.org)
 
-In `haskell/`, run `ghc -O2 -o skynet Skynet.hs` then `./skynet`
+In `haskell/`, run `stack build && stack exec skynet +RTS -N`
 
 ### Node (bluebird)
 

@@ -5,17 +5,16 @@ import Data.Time.Clock (getCurrentTime, diffUTCTime)
 
 import Control.Parallel.Strategies
 
-skynet :: Int -> Int -> Int -> Int
-skynet num size dv
-    | size == 1 = num
-    | otherwise = sum (parMap rpar subcompute [0 .. dv-1])
+skynet :: Int -> Int -> Int
+skynet levels children = sky levels 0
     where
-        subcompute i = let subNum  = num + i * sizeDiv
-                           sizeDiv = size `quot` dv
-                       in  skynet subNum sizeDiv dv
+        childnums = [0..children-1]
+        sky 0   position = position
+        sky lvl position = sum (map (\cn -> sky (lvl-1) $ position*children + cn) childnums `using` evalList rpar)
+
 run :: IO ()
 run = do
     start  <- getCurrentTime
-    let !result = skynet 1 1000000 10
+    let !result = skynet 6 10
     end    <- getCurrentTime
     putStrLn $ concat ["Result: ", show result, " in ", show (diffUTCTime end start)]

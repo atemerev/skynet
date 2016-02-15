@@ -18,6 +18,20 @@ function skynetAsync(num, size, div) {
   }
 }
 
+function skynetSync(num, size, div) {
+  if (size === 1)
+    return num;
+
+  const tasks = new Array(div);
+  const sz = size/div;
+  let sum = 0;
+  for (var i = 0; i < div; i++) {
+	const sub_num = num + i * sz;
+    sum += skynetSync(sub_num, sz, div);
+  }
+  return sum;
+}
+
 function sum(values) {
   var sum = 0;
   for (var k = 0; k < values.length; ++k) {
@@ -26,14 +40,24 @@ function sum(values) {
   return sum;
 }
 
-console.time("regular")
+console.time("sync")
+let res = skynetSync(0, 1000000, div)
+console.log(res)
+console.timeEnd("sync")
+
+console.time("sync warmed-up")
+res = skynetSync(0, 1000000, div)
+console.log(res)
+console.timeEnd("sync warmed-up")
+
+console.time("async")
 skynetAsync(0, 1000000, div)
 .then(res => {
     console.log(res)
-    console.timeEnd("regular")
-    console.time("warmed-up")
+    console.timeEnd("async")
+    console.time("async warmed-up")
     return skynetAsync(0, 1000000, div)
 }).then(res => {
     console.log(res)
-    console.timeEnd("warmed-up")
+    console.timeEnd("async warmed-up")
 })

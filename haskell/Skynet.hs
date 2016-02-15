@@ -4,29 +4,22 @@
 
 module Main (main) where
 
-import Control.Concurrent.Async (async, wait)
+import Control.Parallel.Strategies (parMap, rseq)
 import Control.Monad            (forM, replicateM_, void)
 import Data.Time.Clock          (getCurrentTime, diffUTCTime)
 
-skynet :: Int -> Int -> Int -> IO Int
-skynet num size cnt
-  | size == 1 = return num
-  | otherwise = do
-      kids <- spawnNKids (cnt - 1)
-      rs   <- mapM wait kids
-      return (sum rs)
- where
-   spawnKid i = async (skynet subNum sizeDiv cnt)
-     where subNum = num + i * sizeDiv
-           sizeDiv = size `quot` cnt
-   spawnNKids n = forM [0..n] spawnKid
+skynet :: Int -> Int -> Int
+skynet levels children = sky levels 0
+    where
+        childnums = [0..children-1]
+        sky 0   position = position
+        sky lvl position = sum $ parMap rseq (\cn -> sky (lvl-1) $ position*children + cn) childnums
 
 doRun :: IO ()
 doRun = do
     start  <- getCurrentTime
-    t      <- async (skynet 0 1000000 10)
-    result <- wait t
-    end    <- getCurrentTime
+    let result = skynet 6 10
+    end    <- result `seq` getCurrentTime
     putStrLn $ concat ["Result: ", show result, " in ", show (diffUTCTime end start)]
 
 main :: IO ()

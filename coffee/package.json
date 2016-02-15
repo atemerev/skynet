@@ -1,0 +1,19 @@
+{
+  "name": "skynet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "skynet.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bench": "coffee skynet.coffee"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "js-csp": "^0.5.0"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.10.0"
+  }
+}

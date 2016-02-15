@@ -12,7 +12,7 @@ SObjectizer can be downloaded as archive:
 
   https://github.com/masterspline/SObjectizer/releases/tag/v5.5.15.2
 
-Directories so_5/ timertt/ various_helpers_1/ and cmake/ have to be copied to this folder.
+Directories cmake/ so_5/ timertt/ and various_helpers_1/ have to be copied to this folder.
 
 It is expected following directory structure:
 
@@ -55,7 +55,7 @@ Building via CMake
 
   mkdir cmake_build
   cd cmake_build
-  cmake -DCMAKE_INSTALL_PREFIX=installed_files ../
+  cmake -DCMAKE_INSTALL_PREFIX=installed_files -DCMAKE_BUILD_TYPE=Release ../
   make
   make install
 

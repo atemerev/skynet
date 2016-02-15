@@ -23,6 +23,8 @@ if ("x${CMAKE_CXX_COMPILER_ID}" MATCHES "xGNU"
 	add_definitions(-std=c++11 -pthread -mtune=native -march=native -Wall)
 	set(CMAKE_EXE_LINKER_FLAGS "-pthread")
 	set(CMAKE_SHARED_LINKER_FLAGS "-pthread")
+elseif (${MSVC})
+    # message("Using MSVC compiler!!!")
 else ()
     message(FATAL_ERROR "Your C++ compiler is not supported.")
 endif ()

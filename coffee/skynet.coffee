@@ -1,3 +1,5 @@
+# Ported to match the example in go
+
 {chan, go, put, takeAsync} = require 'js-csp'
 
 skynet = (c, num, size, div) ->

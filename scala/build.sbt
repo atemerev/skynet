@@ -4,8 +4,5 @@ lazy val root = (project in file(".")).
     organization := "com.temerev",
     scalaVersion := "2.11.7",
     version := "0.1.0",
-    sbtVersion := "0.13.9",
-    libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-actor" % "2.4.1"
-    )
+    sbtVersion := "0.13.9"
   )

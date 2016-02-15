@@ -90,10 +90,10 @@ Go to `crystal/`
 
 Build the solution with VS2015. Windows only :(
 
-### Rust
+### Rust (with [coroutine-rs](https://github.com/rustcc/coroutine-rs))
 
 ```bash
-cd rust
+cd ./rust-coroutine
 cargo build --release
 cargo run --release
 ```

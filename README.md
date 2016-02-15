@@ -81,7 +81,7 @@ Go to `dnx/`
 
 Install the GHC compiler
 
-In `haskell/`, run `ghc -O2 -o skynet Skynet.hs` then `./skynet`
+In `haskell/`, run `ghc -O2 -o skynet Skynet.hs -threaded` then `./skynet +RTS -N`
 
 ### Node (bluebird)
 

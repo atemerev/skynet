@@ -89,3 +89,11 @@ Go to `crystal/`
 ### .NET/TPL
 
 Build the solution with VS2015. Windows only :(
+
+### Rust
+
+```bash
+cd rust
+cargo build --release
+cargo run --release
+```

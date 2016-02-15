@@ -89,3 +89,11 @@ Go to `crystal/`
 ### .NET/TPL
 
 Build the solution with VS2015. Windows only :(
+
+
+
+### java with kilim (actor library)
+- ./build.sh
+- java -Xmx1G -cp "target/*" kilim.examples.Skynet
+
+

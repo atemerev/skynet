@@ -34,7 +34,7 @@ protected
 						open( SO5_ARCH_URL, 'rb', {
 								:ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE,
 								:progress_proc => lambda do |size|
-									STDOUT.print "#{size}/#{length} bytes\r"
+									STDOUT.print "#{size} bytes\r"
 								end
 							} ),
 						f )

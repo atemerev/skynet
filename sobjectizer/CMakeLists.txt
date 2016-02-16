@@ -27,11 +27,14 @@ else ()
     message(FATAL_ERROR "Your C++ compiler is not supported.")
 endif ()
 
+ExternalProject_Get_Property(so_5_prj source_dir)
+ExternalProject_Get_Property(so_5_prj binary_dir)
 include_directories( ${CMAKE_CURRENT_LIST_DIR} )
+include_directories( ${source_dir} )
 
 add_executable(skynet1m skynet1m.cpp)
 add_dependencies(skynet1m so_5_prj)
-target_link_libraries(skynet1m so.${SO_5_VERSION})
+target_link_libraries(skynet1m ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}so.${SO_5_VERSION})
 install(TARGETS skynet1m DESTINATION bin)
 
 add_executable(skynet1m-tp_disp skynet1m-tp_disp.cpp)

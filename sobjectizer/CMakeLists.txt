@@ -5,7 +5,8 @@ include(ExternalProject)
 ExternalProject_add(so_5_prj
 	SVN_REPOSITORY http://svn.code.sf.net/p/sobjectizer/repo/tags/so_5/5.5.15.2/dev
 	CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-			-DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}
+				-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+	INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
 	LOG_DOWNLOAD ON
 	LOG_CONFIGURE ON
 	LOG_BUILD ON
@@ -31,10 +32,11 @@ ExternalProject_Get_Property(so_5_prj source_dir)
 ExternalProject_Get_Property(so_5_prj binary_dir)
 include_directories( ${CMAKE_CURRENT_LIST_DIR} )
 include_directories( ${source_dir} )
+link_directories( ${binary_dir}/so_5 )
 
 add_executable(skynet1m skynet1m.cpp)
 add_dependencies(skynet1m so_5_prj)
-target_link_libraries(skynet1m ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}so.${SO_5_VERSION})
+target_link_libraries(skynet1m so.${SO_5_VERSION})
 install(TARGETS skynet1m DESTINATION bin)
 
 add_executable(skynet1m-tp_disp skynet1m-tp_disp.cpp)

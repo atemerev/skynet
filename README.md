@@ -7,23 +7,40 @@ until reaching the root actor. (The answer should be 499999500000).
 
 ## Results (on my shitty Macbook 12" '2015, **Core M**, OS X): 
 
-- Scala/Akka: ? ms (somebody run this)
-- Haskell (GHC 7.10.3): 6181 ms.
+### Actors
+
+- Scala/Akka: 6379 ms. 
 - Erlang (non-HIPE): 4414 ms.
 - Erlang (HIPE): 3999 ms.
+
+### Coroutines / channels
+
+- Haskell (GHC 7.10.3): 6181 ms.
 - Go: 979 ms.
-- .NET Core: Async (8 threads) 650 ms / Sync (1 thread) 232 ms
+
+### Futures / promises
+
+- .NET Core: 650 ms.
+- RxJava: 219 ms.
 
 ## Results (**i7-4770**, Win8.1): 
 
+### Actors
+
 - Scala/Akka: 4419 ms
-- Haskell (GHC 7.10.3): 2820 ms.
 - Erlang (non-HIPE): 1700 ms.
+
+### Coroutines / channels
+
+- Haskell (GHC 7.10.3): 2820 ms.
 - Go: 629 ms.
-- .NET Core: Async (8 threads) 290 ms / Sync (1 thread) 49 ms.
+- F# MailboxProcessor: 756ms. (should be faster?..)
+
+### Futures / promises
+
+- .NET Core: Async (8 threads) 290 ms
 - Node-bluebird (Promise) 285ms / 195ms (after warmup)
-- F# MailboxProcessor: 756ms (should be faster?..)
-- .NET Full (TPL): 118 ms
+- .NET Full (TPL): 118 ms.
 
 ## Results (**i7-4771**, Ubuntu 15.10): 
 
@@ -97,3 +114,10 @@ Go to `crystal/`
 ### .NET/TPL
 
 Build the solution with VS2015. Windows only :(
+=======
+### Java
+
+Install the Java 8 SDK.
+
+Go to `java/`
+`./gradlew :run`

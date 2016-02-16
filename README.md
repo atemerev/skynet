@@ -55,6 +55,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - Go: 243 ms.
 - F# Mono MailboxProcessor: 1057 ms.
 - libmill: 10944 ms.
+- crystal: 248 ms.
 
 ### Futures / promises
 

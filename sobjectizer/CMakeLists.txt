@@ -1,20 +1,18 @@
 cmake_minimum_required(VERSION 2.8)
 
+include(ExternalProject)
+
+ExternalProject_add(so_5_prj
+	SVN_REPOSITORY http://svn.code.sf.net/p/sobjectizer/repo/tags/so_5/5.5.15.2/dev
+	CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+			-DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}
+	LOG_DOWNLOAD ON
+	LOG_CONFIGURE ON
+	LOG_BUILD ON
+)
+
 # Extract SO_5_VERSION from version.rb
-set(SO_5_VERSION "")
-
-file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/so_5/version.rb"
-     _SO_5_VERSION_RB_CONTENTS
-     REGEX "^[ \t]*VERSION[ \t]*=[ \t]*\"[0-9]+[.][0-9]+[.][0-9]+[^\"]*\"[ \t]*")
-
-set(_SO_5_VERSION_REGEX "\"([0-9.]+)\"")
-if("${_SO_5_VERSION_RB_CONTENTS}" MATCHES "^[ \t]*VERSION[ \t]*=[ \t]*${_SO_5_VERSION_REGEX}[ \t]*")
-    set(SO_5_VERSION "${CMAKE_MATCH_1}")
-else()
-    message("Failed extract version information from ${CMAKE_CURRENT_SOURCE_DIR}/so_5/version.rb")
-    message("_SO_5_VERSION_RB_CONTENTS :${_SO_5_VERSION_RB_CONTENTS}:")
-    message(FATAL_ERROR "SO_5_VERSION \"${SO_5_VERSION}\"")
-endif()
+set(SO_5_VERSION "5.5.15.2")
 
 if ("x${CMAKE_CXX_COMPILER_ID}" MATCHES "xGNU"
      OR "x${CMAKE_CXX_COMPILER_ID}" MATCHES "xClang"
@@ -31,13 +29,13 @@ endif ()
 
 include_directories( ${CMAKE_CURRENT_LIST_DIR} )
 
-add_subdirectory(so_5)
-
 add_executable(skynet1m skynet1m.cpp)
+add_dependencies(skynet1m so_5_prj)
 target_link_libraries(skynet1m so.${SO_5_VERSION})
 install(TARGETS skynet1m DESTINATION bin)
 
 add_executable(skynet1m-tp_disp skynet1m-tp_disp.cpp)
+add_dependencies(skynet1m-tp_disp so_5_prj)
 target_link_libraries(skynet1m-tp_disp so.${SO_5_VERSION})
 install(TARGETS skynet1m-tp_disp DESTINATION bin)
 

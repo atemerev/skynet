@@ -1,6 +1,10 @@
 require 'mxx_ru/cpp'
 
+require_relative 'autoloadso5.rb'
+
 MxxRu::Cpp::composite_target( MxxRu::BUILD_ROOT ) {
+
+	AutoLoadSo5.new.load_and_unpack_if_necessary
 
 	toolset.force_cpp11
 	global_include_path "."
@@ -23,3 +27,4 @@ MxxRu::Cpp::composite_target( MxxRu::BUILD_ROOT ) {
 	required_prj 'skynet1m.rb'
 	required_prj 'skynet1m-tp_disp.rb'
 }
+

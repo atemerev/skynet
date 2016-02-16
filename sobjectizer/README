@@ -6,32 +6,14 @@ Install Ruby and then install Mxx_ru via RubyGems command:
 
   gem install Mxx_ru
 
-SObjectizer can be downloaded as archive:
-
-  https://sourceforge.net/projects/sobjectizer/files/sobjectizer/SObjectizer%20Core%20v.5.5/
-
-  https://github.com/masterspline/SObjectizer/releases/tag/v5.5.15.2
-
-Directories cmake/ so_5/ timertt/ and various_helpers_1/ have to be copied to this folder.
-
-It is expected following directory structure:
-
-../
-cmake/
-lib/
-so_5/
-timertt/
-various_helpers_1/
-build.rb
-CMakeLists.txt
-skynet1m.cpp
-skynet1m.rb
-skynet1m-tp_disp.cpp
-skynet1m-tp_disp.rb
-
 To build SObjectizer and benchmarks:
 
+  cd sobjectizer
   ruby build.rb
+
+This script automatically downloads so-5.5.15.2.tar.gz archive, unpack it,
+copy all necessary files and folders to the current folder and builds
+skynet1m and skynet1m-tp_disp applications.
 
 skynet1m is implementation with one_thread dispatcher.
 skynet1m-tp_disp is implementation with thread_pool dispatcher.

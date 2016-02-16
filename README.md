@@ -5,6 +5,8 @@ more actors, etc. until one million actors are created on the final level. Then,
 back its ordinal number (from 0 to 999999), which are summed on the previous level and sent back upstream,
 until reaching the root actor. (The answer should be 499999500000).
 
+**WARNING: The times below are currently out of date! See [#39](https://github.com/atemerev/skynet/issues/39) and [#47](https://github.com/atemerev/skynet/issues/47).**
+
 ## Results (on my shitty Macbook 12" '2015, **Core M**, OS X): 
 
 ### Actors

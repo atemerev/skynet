@@ -14,11 +14,13 @@ class AutoLoadSo5
 	SO5_ARCH_TMP_NAME = SO5_ARCH_NAME + '.tmp'
 	SO5_ARCH_SHA1 = '834247d8bd7a9688bf3540f036520ada290e530b'
 	SO5_MAIN_PATH = 'so_5'
-	SUCCESS_MARK = '.successful'
+	SUCCESS_MARK = File.join( SO5_MAIN_PATH, '.successful' )
 
 	def load_and_unpack_if_necessary
-		load_if_necessary
-		unpack_if_necessary
+		if does_unpack_needed
+			load_if_necessary
+			unpack_if_necessary
+		end
 	end
 
 protected
@@ -27,14 +29,10 @@ protected
 		FileUtils.cd( SO5_ARCH_SUBDIR ) do
 			if !File.exist?( SO5_ARCH_NAME )
 				puts "Downloading #{SO5_ARCH_NAME} -> #{SO5_ARCH_TMP_NAME}..."
-				length = 0
 				File.open( SO5_ARCH_TMP_NAME, 'wb' ) do |f|
 					IO.copy_stream(
 						open( SO5_ARCH_URL, 'rb', {
 								:ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE,
-								:content_length_proc => lambda do |size|
-									length = size
-								end,
 								:progress_proc => lambda do |size|
 									STDOUT.print "#{size}/#{length} bytes\r"
 								end
@@ -55,24 +53,19 @@ protected
 	end
 
 	def unpack_if_necessary
-		return unless does_unpack_needed
-
-		puts "unpacking #{SO5_ARCH_NAME}"
 		FileUtils.cd( SO5_ARCH_SUBDIR ) do
 			FileUtils.rm_rf SO5_ARCH_UNPACKED_SUBDIR, :verbose => true
+			puts "unpacking #{SO5_ARCH_NAME}"
 			unpack_tar
-			move_necessary_folders
 		end
+
+		move_necessary_folders
+		remove_remaining_sources
+		FileUtils.touch( SUCCESS_MARK )
 	end
 	
 	def does_unpack_needed
-		if Dir.exist?( SO5_MAIN_PATH )
-			if File.exist?( File.join( SO5_MAIN_PATH, SUCCESS_MARK ) )
-				return false
-			end
-		end
-
-		true
+		!File.exist?( SUCCESS_MARK )
 	end
 
 	def unpack_tar
@@ -80,18 +73,27 @@ protected
 			tar.each do |entry|
 				what = entry.full_name
 				if entry.directory?
-					FileUtils.mkdir_p what, :mode => entry.header.mode, :verbose => true
+					FileUtils.mkdir_p what, :mode => entry.header.mode, :verbose => false
 				elsif entry.file?
 					File.open( what, "wb" ) { |f| f.print entry.read }
-					FileUtils.chmod entry.header.mode, what, :verbose => true
+					FileUtils.chmod entry.header.mode, what, :verbose => false
 				end
 			end
 		end
 	end
 
 	def move_necessary_folders
+		%w{ so_5 timertt }.each do |d|
+			FileUtils.rm_rf d, :verbose => true
+			src = File.join SO5_ARCH_SUBDIR, SO5_ARCH_UNPACKED_SUBDIR, 'dev', d
+			FileUtils.mv src, '.', :verbose => true
+		end
 	end
 
+	def remove_remaining_sources
+		FileUtils.rm_rf File.join( SO5_ARCH_SUBDIR, SO5_ARCH_UNPACKED_SUBDIR ),
+			:verbose => true
+	end
 end
 
 if $0 == __FILE__

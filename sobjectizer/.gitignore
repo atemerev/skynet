@@ -1,2 +1,5 @@
 .so5arch/
 .*.swp
+local-build.rb
+so_5/
+timertt/

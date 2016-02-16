@@ -42,6 +42,27 @@ until reaching the root actor. (The answer should be 499999500000).
 - Node-bluebird (Promise) 285ms / 195ms (after warmup)
 - .NET Full (TPL): 118 ms.
 
+## Results (**i7-4770**, OS X 10.11.3): 
+
+### Actors
+
+- Scala/Akka: 1771 ms.
+- Erlang (non-HIPE): 930 ms.
+
+### Coroutines / channels
+
+- Haskell (GHC 7.10.3): 33 ms.
+- Go: 243 ms.
+- F# Mono MailboxProcessor: 1057 ms.
+- libmill: 10944 ms.
+
+### Futures / promises
+
+- .NET Core (Async): 421 ms.
+- .NET Mono (TPL): 167 ms.
+- RxJava: 128 ms.
+- Node-bluebird (Promise) 201 ms / 154 ms (after warmup).
+
 ## Results (**i7-4771**, Ubuntu 15.10): 
 
 - Scala/Akka: 1700-2700 ms

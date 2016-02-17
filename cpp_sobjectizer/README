@@ -1,0 +1,96 @@
+This is a variant of skynet benchmark for C++ and SObjectizer framework.
+
+There are two approaches for building SObjectizer's versions of benchmark.
+The simplest approach requires Ruby and Mxx_ru. SObjectizer's source code
+will be downloaded automatically.
+
+Another approach uses CMake. It requires also Subversion to get SObjectizer's
+source code from SObjectizer's repository.
+
+Building via Mxx_ru
+===================
+
+To build SObjectizer and benchmarks it is necessary to use Ruby language and
+Mxx_ru tool.
+
+Install Ruby and then install Mxx_ru via RubyGems command:
+
+  gem install Mxx_ru
+
+To build SObjectizer and benchmarks:
+
+  cd sobjectizer
+  ruby build.rb
+
+This script automatically downloads so-5.5.15.2.tar.gz archive, unpacks it,
+copies all necessary files and folders to the current folder and builds
+skynet1m and skynet1m-tp_disp applications.
+
+skynet1m is implementation with one_thread dispatcher.
+skynet1m-tp_disp is implementation with thread_pool dispatcher.
+
+Please note that under Linux it could be necessary to define LD_LIBRARY_PATH
+environment variable. And the actual build command sequence under Linux could
+be as follows:
+
+  export LD_LIBRARY_PATH=.
+  ruby build.rb
+
+NOTE. If you do not specify MXX_RU_CPP_TOOLSET by youself then Mxx_ru will
+try to detect your C++ toolset automatically. If you want to use C++ compiler
+which is not default in your system please define MXX_RU_CPP_TOOLSET
+environment variable manually. It could look like:
+
+  export MXX_RU_CPP_TOOLSET="clang_linux compiler_name=clang++-3.5 linker_name=clang++-3.5"
+
+Building via CMake
+==================
+
+This approach requires CMake and Subversion. CMake will be used for building
+SObjectizer and benchmarks. Subversion will be used for obtaining SObjectizer's
+source code from SObjectizer's repository.
+
+If CMake and Subversion are installed and accessible via PATH then:
+
+  git clone https://github.com/atemerev/skynet.git
+  cd skynet/sobjectizer
+  mkdir cmake_build
+  cd cmake_build
+  cmake -DCMAKE_INSTALL_PREFIX=. -DCMAKE_BUILD_TYPE=Release ../
+  make install
+
+Those commands will create all necessary Makefile, then build SObjectizer
+and benchmarks.
+
+Executables skynet1m and skynet1m-tp_disp will be placed in `bin` subdirectory.
+Shared library libso.5.5.15.2.so will be in `lib` subdirectory. Because of
+that benchmarks can be run by the following commands:
+
+  export LD_LIBRARY_PATH=lib
+  bin/skynet1m
+  bin/skynet1m-tp_disp
+
+On Windows there can be several other approaches.
+
+In the case of MinGW (for example, MinGW-w64):
+
+  mkdir cmake_build
+  cd cmake_build
+  cmake -DCMAKE_INSTALL_PREFIX=. -G "MinGW Makefiles" ../
+  mingw32-make install
+
+To build SObjectizer under Windows by msbuild utility from Visual Studio 2015:
+
+  mkdir cmake_build
+  cd cmake_build
+  cmake -DCMAKE_INSTALL_PREFIX=. -G "Visual Studio 14 2015" ../
+  msbuild /m /t:Build /p:Configuration=Release ALL_BUILD.vcxproj
+  msbuild /m /t:Build /p:Configuration=Release INSTALL.vcxproj
+
+Or by using nmake:
+
+  mkdir cmake_build
+  cd cmake_build
+  cmake -DCMAKE_INSTALL_PREFIX=. -G "nmake Makefiles" ../
+  nmake install
+

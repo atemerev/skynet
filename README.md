@@ -106,6 +106,7 @@ Go to `crystal/`
 ### .NET/TPL
 
 Build the solution with VS2015. Windows only :(
+
 =======
 ### Java
 
@@ -113,3 +114,11 @@ Install the Java 8 SDK.
 
 Go to `java/`
 `./gradlew :run`
+
+### Rust (with [coroutine-rs](https://github.com/rustcc/coroutine-rs))
+
+```bash
+cd ./rust-coroutine
+cargo build --release
+cargo run --release
+```

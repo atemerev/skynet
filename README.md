@@ -60,6 +60,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - libmill: 10944 ms.
 - swift-venice: 17522 ms.
 - crystal: 248 ms.
+- rust: 450 ms.
 
 ### Futures / promises
 

@@ -5,3 +5,5 @@ lazy val root = (project in file(".")).
     version := "0.1.0",
     sbtVersion := "0.13.9"
   )
+
+enablePlugins(JmhPlugin)

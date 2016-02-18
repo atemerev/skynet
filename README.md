@@ -150,6 +150,16 @@ Install the Java 8 SDK.
 Go to `java/`
 `./gradlew :run`
 
+### Swift - Venice (libmill based)
+
+Install [Swift Development Snapshot](https://swift.org/download/)
+
+Go to `swift-venice`
+```bash
+swift build -c release
+.build/release/swift-venice
+```
+
 ### Rust (with [coroutine-rs](https://github.com/rustcc/coroutine-rs))
 
 ```bash

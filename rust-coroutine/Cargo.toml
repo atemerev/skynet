@@ -1,0 +1,9 @@
+[package]
+name = "rust"
+version = "0.1.0"
+authors = ["Kirill Pimenov <kirill@pimenov.cc>"]
+
+[dependencies]
+
+[dependencies.coroutine]
+git = "https://github.com/rustcc/coroutine-rs.git"

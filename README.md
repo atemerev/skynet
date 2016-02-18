@@ -1,3 +1,6 @@
+[![Issue Stats](http://issuestats.com/github/atemerev/skynet/badge/pr   )](http://issuestats.com/github/atemerev/skynet)
+[![Issue Stats](http://issuestats.com/github/atemerev/skynet/badge/issue)](http://issuestats.com/github/atemerev/skynet)
+
 # Skynet 1M concurrency microbenchmark
 
 Creates an actor (goroutine, whatever), which spawns 10 new actors, each of them spawns 10 
@@ -137,6 +140,7 @@ Go to `crystal/`
 ### .NET/TPL
 
 Build the solution with VS2015. Windows only :(
+
 =======
 ### Java
 
@@ -144,3 +148,11 @@ Install the Java 8 SDK.
 
 Go to `java/`
 `./gradlew :run`
+
+### Rust (with [coroutine-rs](https://github.com/rustcc/coroutine-rs))
+
+```bash
+cd ./rust-coroutine
+cargo build --release
+cargo run --release
+```

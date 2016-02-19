@@ -23,6 +23,7 @@ let rec launch num size postback =
       let subNum = num + (int64 i) * subSize
       launch subNum subSize mbp.Post
 
+let sw = Stopwatch.StartNew()
 launch 0L 1000000L (printfn "Value = %d")
 
 [<EntryPoint>]

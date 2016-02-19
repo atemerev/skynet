@@ -1,8 +1,7 @@
--- this needs fixed still
-module Main (main) where
+module Unagi (main) where
 
 import Control.Concurrent (forkIO)
-import Control.Concurrent.Chan.Unagi (InChan, newChan, writeChan, readChan)
+import Control.Concurrent.Chan.Unagi.Unboxed (InChan, newChan, writeChan, readChan)
 import Control.Monad (forM_, replicateM)
 import Data.Time.Clock (getCurrentTime, diffUTCTime)
 
@@ -16,13 +15,13 @@ skynet c num size div'
                   sizeDiv = size `quot` div'
               forkIO $ skynet inChan subNum sizeDiv div'
           sum' <- sum <$> replicateM div' (readChan outChan)
-          writeChan inChan sum'
+          writeChan c sum'
 
 main :: IO ()
 main = do
     (inChan, outChan) <- newChan
     start  <- getCurrentTime
-    _      <- forkIO $ skynet inChan 1 1000000 10
+    _      <- forkIO $ skynet inChan 0 1000000 10
     result <- readChan outChan
     end    <- getCurrentTime
     putStrLn $ concat ["Result: ", show result, " in ", show (diffUTCTime end start)]

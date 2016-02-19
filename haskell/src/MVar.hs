@@ -30,7 +30,7 @@ run :: IO ()
 run = do
     c      <- newEmptyMVar
     start  <- getCurrentTime
-    _      <- forkIO (skynet c 1 1000000 10)
+    _      <- forkIO (skynet c 0 1000000 10)
     result <- takeMVar c
     end    <- getCurrentTime
     putStrLn $ concat [ "Result: "

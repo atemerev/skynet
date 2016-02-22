@@ -7,8 +7,7 @@
         (let [factor (/ size div)]
           (loop [sum 0 [c & rem] (->> div range
                                       (map #(skynet (+ num (* % factor)) factor div)))]
-            (if (nil? c) sum
-                (recur (+ sum (<! c)) rem)))))))
+            (if c (recur (+ sum (<! c)) rem) sum))))))
 
 (defn -main  [& args]
   (-> (skynet 0 1000000 10) <!! time println))

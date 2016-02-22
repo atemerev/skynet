@@ -5,8 +5,8 @@
   (go
     (if (= 1 size) num
         (let [factor (/ size div)]
-          (loop [sum 0 [c & rem] (->> div range
-                                      (map #(skynet (+ num (* % factor)) factor div)))]
+          (loop [sum 0 [c & rem] (map #(skynet (+ num (* % factor)) factor div)
+                                      (range div))]
             (if c (recur (+ sum (<! c)) rem) sum))))))
 
 (defn -main  [& args]

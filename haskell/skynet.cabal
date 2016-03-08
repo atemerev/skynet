@@ -21,6 +21,7 @@ executable skynet
                        Parallel
                        MVar
                        TBQueue
+                       Unagi
   build-depends:       base >= 4.7 && < 5
                      , async
                      , criterion

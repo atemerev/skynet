@@ -2,10 +2,10 @@
 
 module Chan (run) where
 
-import Control.Concurrent       (forkIO)
-import Control.Concurrent.Chan  (Chan, newChan, writeChan, readChan)
-import Control.Monad            (forM_, replicateM)
-import Data.Time.Clock          (getCurrentTime, diffUTCTime)
+import Control.Concurrent      (forkIO)
+import Control.Concurrent.Chan (Chan, newChan, writeChan, readChan)
+import Control.Monad           (forM_, replicateM)
+import Data.Time.Clock         (getCurrentTime, diffUTCTime)
 
 children = 10
 

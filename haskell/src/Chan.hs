@@ -20,8 +20,12 @@ skynet c num size div
 run :: IO ()
 run = do
     c <- newChan
-    -- start  <- getCurrentTime
+    start  <- getCurrentTime
     _      <- forkIO $ skynet c 1 1000000 10
     result <- readChan c
-    putStrLn $ "Result: " ++ show result
-    -- end    <- getCurrentTime
+    end    <- getCurrentTime
+    putStrLn $ concat [ "Result: "
+                      , show result
+                      , " in "
+                      , show $ diffUTCTime end start
+                      ]

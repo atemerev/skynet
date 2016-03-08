@@ -3,7 +3,7 @@ module Parallel (run) where
 
 import Data.Time.Clock (getCurrentTime, diffUTCTime)
 
-import Control.Parallel.Strategies
+import Control.Parallel.Strategies (parMap, rpar)
 
 skynet :: Int -> Int -> Int
 skynet levels children = sky levels 0
@@ -17,4 +17,8 @@ run = do
     start  <- getCurrentTime
     let !result = skynet 6 10
     end    <- getCurrentTime
-    putStrLn $ concat ["Result: ", show result, " in ", show (diffUTCTime end start)]
+    putStrLn $ concat [ "Result: "
+                      , show result
+                      , " in "
+                      , show $ diffUTCTime end start
+                      ]

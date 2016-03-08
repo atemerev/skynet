@@ -16,9 +16,9 @@ plus1 !n !rc = do
 
 forkSkynet :: Int -> Int -> IO (MVar Int)
 forkSkynet !lvl !num = do
-            rc <- newEmptyMVar
-            _  <- forkIO $ skynet rc lvl num
-            return rc
+    rc <- newEmptyMVar
+    _  <- forkIO $ skynet rc lvl num
+    return rc
 
 skynet :: MVar Int -> Int -> Int -> IO ()
 skynet c    0 !num = putMVar c num
@@ -40,4 +40,5 @@ run = do
     putStrLn $ concat [ "Result: "
                       , show result
                       , " in "
-                      , show (diffUTCTime end start) ]
+                      , show $ diffUTCTime end start
+                      ]

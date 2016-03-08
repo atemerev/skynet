@@ -2,10 +2,10 @@
 
 module MVar (run) where
 
-import Control.Concurrent (forkIO)
+import Control.Concurrent      (forkIO)
 import Control.Concurrent.MVar (MVar, newEmptyMVar, putMVar, takeMVar)
-import Control.Monad (forM, foldM)
-import Data.Time.Clock (getCurrentTime, diffUTCTime)
+import Control.Monad           (forM, foldM)
+import Data.Time.Clock         (getCurrentTime, diffUTCTime)
 
 children = 10
 

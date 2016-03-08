@@ -1,9 +1,8 @@
 {-# LANGUAGE BangPatterns #-}
 module Parallel (run) where
 
-import Data.Time.Clock (getCurrentTime, diffUTCTime)
-
 import Control.Parallel.Strategies (parMap, rpar)
+import Data.Time.Clock             (getCurrentTime, diffUTCTime)
 
 skynet :: Int -> Int -> Int
 skynet levels children = sky levels 0

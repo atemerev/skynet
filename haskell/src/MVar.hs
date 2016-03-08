@@ -4,33 +4,32 @@ module MVar (run) where
 
 import Control.Concurrent (forkIO)
 import Control.Concurrent.MVar (MVar, newEmptyMVar, putMVar, takeMVar)
-import Control.Monad (forM)
+import Control.Monad (forM, foldM)
 import Data.Time.Clock (getCurrentTime, diffUTCTime)
 
-skynet :: MVar Int -> Int -> Int -> Int -> IO ()
-skynet c !num !size div
-    | size == 1 = putMVar c num
-    | otherwise = do
-        rcs <- forM [0..div-1] (\i -> do
-            rc <- newEmptyMVar
-            let subNum  = num + i * sizeDiv
-                sizeDiv = size `quot` div
-            _ <- forkIO (skynet rc subNum sizeDiv div)
-            return rc )
-        result <- loop1 rcs 0
-        putMVar c result
-
-loop1 :: [MVar Int] -> Int -> IO Int
-loop1  []      !n = return n
-loop1 (rc:rcs) !n = do
+plus1 :: Int -> MVar Int -> IO Int
+plus1 !n rc = do
     n' <- takeMVar rc
-    loop1 rcs (n + n')
+    return $ n + n' 
+
+forkSkynet :: Int -> Int -> Int -> IO (MVar Int)
+forkSkynet !num !size !div = do
+            rc <- newEmptyMVar
+            _ <- forkIO $ skynet rc num size div
+            return rc
+
+skynet :: MVar Int -> Int -> Int -> Int -> IO ()
+skynet c !num     1 div = putMVar c num
+skynet c !num !size div = let sizeDiv = size `quot` div in do
+        rcs <- forM [0..div-1] (\i -> let subNum  = num + i * sizeDiv in
+            forkSkynet subNum sizeDiv div)
+        result <- foldM plus1 0 rcs
+        putMVar c result
 
 run :: IO ()
 run = do
-    c      <- newEmptyMVar
     start  <- getCurrentTime
-    _      <- forkIO (skynet c 1 1000000 10)
+    c      <- forkSkynet 0 1000000 10
     result <- takeMVar c
     end    <- getCurrentTime
     putStrLn $ concat [ "Result: "

@@ -8,6 +8,7 @@ import qualified Parallel
 
 main :: IO ()
 main = defaultMain
-  [ bench "parallel" $ whnfIO Parallel.run -- 51 ms
-  -- , bench "MVar" $ whnfIO MVar.run -- 2.2 s
+  [ bench "parallel" $ whnfIO Parallel.run --    51 ms
+  , bench "MVar"     $ whnfIO     MVar.run -- 2.2 s
+  --, bench "Chan"     $ whnfIO     Chan.run -- 2.2 s
   ]

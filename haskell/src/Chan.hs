@@ -16,10 +16,10 @@ skynet c !lvl !num = let
     !numLast  = numFirst + children - 1
     !lvl1     = lvl - 1
     in do
-          rc <- newChan
-          forM_ [numFirst..numLast] $ forkIO . skynet rc lvl1 
-          result <- sum <$> replicateM children (readChan rc)
-          writeChan c result
+        rc <- newChan
+        forM_ [numFirst..numLast] $ forkIO . skynet rc lvl1 
+        result <- sum <$> replicateM children (readChan rc)
+        writeChan c result
 
 run :: IO ()
 run = do

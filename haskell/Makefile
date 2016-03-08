@@ -1,4 +1,4 @@
-SOURCES=src/MVar.hs src/Chan.hs src/Parallel.hs src/Main.hs
+SOURCES=src/MVar.hs src/Chan.hs src/Parallel.hs src/Main.hs src/TBQueue.hs
 
 All: s
 	./s +RTS -N6

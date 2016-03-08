@@ -4,18 +4,21 @@ module Parallel (run) where
 import Control.Parallel.Strategies (parMap, rpar)
 import Data.Time.Clock             (getCurrentTime, diffUTCTime)
 
+children = 10
+
 skynet :: Int -> Int -> Int
-skynet levels children = sky levels 0
-    where
-        childnums = [0..children-1]
-        sky 0   position = position
-        sky lvl position = sum $ parMap rpar (\cn -> sky (lvl-1) $ position * children + cn) childnums
+skynet   0  !num =  num
+skynet !lvl !num = let
+    !numFirst = num      * children
+    !numLast  = numFirst + children - 1
+    !lvl1     = lvl - 1
+    in sum $ parMap rpar (skynet lvl1) [numFirst..numLast]
 
 run :: IO ()
 run = do
-    start  <- getCurrentTime
-    let !result = skynet 6 10
-    end    <- getCurrentTime
+    start      <- getCurrentTime
+    let !result = skynet 6 0
+    end        <- getCurrentTime
     putStrLn $ concat [ "Result: "
                       , show result
                       , " in "

@@ -9,45 +9,34 @@ import qualified Parallel (run)
 import qualified TBQueue  (run)
 import qualified Unagi    (run)
 
+-- time given for a system: i7-4930K CPU @ 3.40GHz, six cores
+-- run with +RTS -N6
+implList :: [(String, IO ())]
+implList = [ ("Parallel", Parallel.run) -- 0.017 s
+           , ("MVar"    ,     MVar.run) -- 1.7 s
+           , ("Chan"    ,     Chan.run) -- 1.8 s
+           , ("TBQueue" ,  TBQueue.run) -- 6.8 s
+           , ("Unagi"   ,    Unagi.run) -- 15  s
+           ]
+
+
 measureTime :: IO ()
-measureTime  = defaultMain  -- i7-4930K CPU @ 3.40GHz, six cores, +RTS -N6
-    [ bench "Parallel" $ whnfIO Parallel.run -- 0.017 s
-    , bench "MVar"     $ whnfIO     MVar.run -- 1.7 s
-    , bench "Chan"     $ whnfIO     Chan.run -- 1.8 s
-    , bench "TBQueue"  $ whnfIO  TBQueue.run -- 6.8 s
-    , bench "Unagi"    $ whnfIO    Unagi.run -- 15  s
-    ]
+measureTime  = defaultMain $ map bench1 implList
+    where
+    bench1 (name, run) = bench name $ whnfIO run
 
 measureMemory :: IO ()
-measureMemory = do
-    putStrLn "on start"
-    stats0 <- getGCStats
-    putStrLn $ show stats0
-    putStrLn ""
-    putStrLn "Parallel"
-    Parallel.run
-    stats1 <- getGCStats
-    putStrLn $ show stats1
-    putStrLn ""
-    putStrLn "MVar"
-    MVar.run
-    stats2 <- getGCStats
-    putStrLn $ show stats2
-    putStrLn ""
-    putStrLn "Chan"
-    Chan.run
-    stats3 <- getGCStats
-    putStrLn $ show stats3
-    putStrLn ""
-    putStrLn "TBQueue"
-    TBQueue.run
-    stats4 <- getGCStats
-    putStrLn $ show stats4
-    putStrLn ""
-    putStrLn "Unagi"
-    Unagi.run
-    stats5 <- getGCStats
-    putStrLn $ show stats5
+measureMemory  = sequence_ $ map run'stats implList
+    where
+    run'stats (name, run) = do
+        putStrLn name
+        run
+        stats <- getGCStats
+        putStrLn $ show1 stats
+        putStrLn ""
+    show1 x = map comma2nl $ show x
+    comma2nl ',' = '\n'
+    comma2nl c   = c
 
 main :: IO ()
 main = do

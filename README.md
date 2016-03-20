@@ -52,6 +52,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - Erlang (non-HIPE): 700-1100 ms
 - Erlang (HIPE): 2100-3500 ms
 - Go: 200-224 ms
+- LuaJit: 297 ms
 
 ## How to run
 
@@ -133,3 +134,9 @@ cd ./rust-coroutine
 cargo build --release
 cargo run --release
 ```
+
+### LuaJIT
+
+Install luajit
+
+Run `luajit luajit/skynet.lua`

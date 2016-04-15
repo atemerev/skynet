@@ -8,43 +8,6 @@ more actors, etc. until one million actors are created on the final level. Then,
 back its ordinal number (from 0 to 999999), which are summed on the previous level and sent back upstream,
 until reaching the root actor. (The answer should be 499999500000).
 
-## Results (on my shitty Macbook 12" '2015, **Core M**, OS X): 
-
-### Actors
-
-- Scala/Akka: 6379 ms. 
-- Erlang (non-HIPE): 4414 ms.
-- Erlang (HIPE): 3999 ms.
-
-### Coroutines / channels
-
-- Haskell (GHC 7.10.3): 6181 ms.
-- Go: 979 ms.
-
-### Futures / promises
-
-- .NET Core: 650 ms.
-- RxJava: 219 ms.
-
-## Results (**i7-4770**, Win8.1): 
-
-### Actors
-
-- Scala/Akka: 4419 ms
-- Erlang (non-HIPE): 1700 ms.
-
-### Coroutines / channels
-
-- Haskell (GHC 7.10.3): 2820 ms.
-- Go: 629 ms.
-- F# MailboxProcessor: 756ms. (should be faster?..)
-
-### Futures / promises
-
-- .NET Core: Async (8 threads) 290 ms
-- Node-bluebird (Promise) 285ms / 195ms (after warmup)
-- .NET Full (TPL): 118 ms.
-
 ## Results (**i7-4770**, OS X 10.11.3): 
 
 ### Actors

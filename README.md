@@ -75,7 +75,7 @@ Install latest version of .NET Core
 
 Go to `dnx/`  
 `dotnet restore` (first time)  
-`dotnet run`
+`dotnet run --configuration Release`
 
 ### Haskell
 

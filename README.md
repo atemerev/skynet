@@ -58,6 +58,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - Go: 243 ms.
 - F# Mono MailboxProcessor: 1057 ms.
 - libmill: 10944 ms.
+- lua-tarantool: 1130 ms.
 - swift-venice: 17522 ms.
 - crystal: 248 ms.
 - rust: 450 ms.

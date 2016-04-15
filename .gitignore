@@ -14,3 +14,5 @@ fsharp_mono/fsharp_skynet/bin
 fsharp_mono/fsharp_skynet/obj
 *.userprefs
 dotnet-mono/packages
+.build
+*.xcodeproj

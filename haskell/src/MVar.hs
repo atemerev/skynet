@@ -12,7 +12,7 @@ children = 10
 plus1 :: Int -> MVar Int -> IO Int
 plus1 !n !rc = do
     n' <- takeMVar rc
-    return $ n + n' 
+    return $ n + n'
 
 forkSkynet :: Int -> Int -> IO (MVar Int)
 forkSkynet !lvl !num = do

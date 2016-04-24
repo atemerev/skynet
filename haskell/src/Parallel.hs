@@ -1,20 +1,26 @@
 {-# LANGUAGE BangPatterns #-}
 module Parallel (run) where
 
-import Data.Time.Clock (getCurrentTime, diffUTCTime)
+import Control.Parallel.Strategies (parMap, rpar)
+import Data.Time.Clock             (getCurrentTime, diffUTCTime)
 
-import Control.Parallel.Strategies
+children = 10
 
 skynet :: Int -> Int -> Int
-skynet levels children = sky levels 0
-    where
-        childnums = [0..children-1]
-        sky 0   position = position
-        sky lvl position = sum (map (\cn -> sky (lvl-1) $ position*children + cn) childnums `using` evalList rpar)
+skynet   0  !num =  num
+skynet !lvl !num = let
+    !numFirst = num      * children
+    !numLast  = numFirst + children - 1
+    !lvl1     = lvl - 1
+    in sum $ parMap rpar (skynet lvl1) [numFirst..numLast]
 
 run :: IO ()
 run = do
-    start  <- getCurrentTime
-    let !result = skynet 6 10
-    end    <- getCurrentTime
-    putStrLn $ concat ["Result: ", show result, " in ", show (diffUTCTime end start)]
+    start      <- getCurrentTime
+    let !result = skynet 6 0
+    end        <- getCurrentTime
+    putStrLn $ concat [ "Result: "
+                      , show result
+                      , " in "
+                      , show $ diffUTCTime end start
+                      ]

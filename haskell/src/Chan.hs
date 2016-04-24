@@ -1,27 +1,35 @@
+{-# LANGUAGE BangPatterns #-}
+
 module Chan (run) where
 
-import Control.Concurrent (forkIO)
-import Control.Concurrent.Chan  (Chan, newChan, writeChan, readChan)
-import Control.Monad            (forM_, replicateM)
-import Data.Time.Clock          (getCurrentTime, diffUTCTime)
+import Control.Concurrent      (forkIO)
+import Control.Concurrent.Chan (Chan, newChan, writeChan, readChan)
+import Control.Monad           (forM_, replicateM)
+import Data.Time.Clock         (getCurrentTime, diffUTCTime)
 
-skynet :: Chan Int -> Int -> Int -> Int -> IO ()
-skynet c num size div
-    | size == 1 = writeChan c num
-    | otherwise = do
-          rc <- newChan
-          forM_ [0..div-1] $ \i -> do
-              let subNum  = num + i * sizeDiv
-                  sizeDiv = size `quot` div
-              forkIO $ skynet rc subNum sizeDiv div
-          sum' <- sum <$> replicateM div (readChan rc)
-          writeChan c sum'
+children = 10
+
+skynet :: Chan Int -> Int -> Int -> IO ()
+skynet c    0 !num = writeChan c num
+skynet c !lvl !num = let
+    !numFirst = num      * children
+    !numLast  = numFirst + children - 1
+    !lvl1     = lvl - 1
+    in do
+        rc <- newChan
+        forM_ [numFirst..numLast] $ forkIO . skynet rc lvl1
+        result <- sum <$> replicateM children (readChan rc)
+        writeChan c result
 
 run :: IO ()
 run = do
-    c <- newChan
-    -- start  <- getCurrentTime
-    _      <- forkIO $ skynet c 1 1000000 10
+    start  <- getCurrentTime
+    c      <- newChan
+    _      <- forkIO $ skynet c 6 0
     result <- readChan c
-    putStrLn $ "Result: " ++ show result
-    -- end    <- getCurrentTime
+    end    <- getCurrentTime
+    putStrLn $ concat [ "Result: "
+                      , show result
+                      , " in "
+                      , show $ diffUTCTime end start
+                      ]

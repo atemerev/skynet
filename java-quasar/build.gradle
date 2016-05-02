@@ -1,0 +1,45 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+group               = 'co.paralleluniverse'
+version             = '0.1.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+configurations {
+    quasar
+}
+
+configurations.all {
+    resolutionStrategy {
+        failOnVersionConflict()
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "co.paralleluniverse:quasar-core:0.7.5:jdk8"
+    quasar "co.paralleluniverse:quasar-core:0.7.5:jdk8@jar"
+}
+
+mainClassName = "Skynet"
+applicationDefaultJvmArgs = [
+    "-Xms4G",
+    "-Xmx4G",
+
+    "-Dco.paralleluniverse.fibers.detectRunawayFibers=false",
+
+    "-javaagent:${configurations.quasar.singleFile}"
+]
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.12'
+}
+
+defaultTasks 'run'

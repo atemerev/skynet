@@ -1,40 +1,38 @@
 import co.paralleluniverse.fibers.*;
-import co.paralleluniverse.strands.channels.Channel;
-import static co.paralleluniverse.strands.channels.Channels.*;
+import java.util.concurrent.ExecutionException;
 
 public class Skynet {
-    static void skynet(Channel<Long> c, long num, int size, int div) throws SuspendExecution, InterruptedException {
-        if (size == 1) {
-            c.send(num);
-            return;
-        }
+    static long skynet(long num, int size, int div) throws SuspendExecution, InterruptedException {
+        try {
+            if (size == 1)
+                return num;
 
-        Channel<Long> rc = newChannel(BUFFER);
-        long sum = 0L;
-        for (int i = 0; i < div; i++) {
-            long subNum = num + i * (size / div);
-            new Fiber(() -> skynet(rc, subNum, size / div, div)).start();
+            Fiber<Long>[] children = new Fiber[div];
+            long sum = 0L;
+            for (int i = 0; i < div; i++) {
+                long subNum = num + i * (size / div);
+                children[i] = new Fiber<>(() -> skynet(subNum, size / div, div)).start();
+            }
+            for (Fiber<Long> c : children)
+                sum += c.get();
+            return sum;
+        } catch (ExecutionException e) {
+            throw (RuntimeException) e.getCause();
         }
-        for (int i = 0; i < div; i++)
-            sum += rc.receive();
-        c.send(sum);
     }
 
     public static void main(String[] args) throws Exception {
-        for (int i = 0 ; i < RUNS ; i++) {
+        for (int i = 0; i < RUNS; i++) {
             long start = System.nanoTime();
 
-            Channel<Long> c = newChannel(BUFFER);
-            new Fiber(() -> skynet(c, 0, TOTAL, BRANCH)).start();
-            long result = c.receive();
+            long result = new Fiber<>(() -> skynet(0, TOTAL, BRANCH)).start().get();
 
             long elapsed = (System.nanoTime() - start) / 1_000_000;
-            System.out.println((i+1) + ": " + result + " (" + elapsed + " ms)");
+            System.out.println((i + 1) + ": " + result + " (" + elapsed + " ms)");
         }
     }
 
     static final int RUNS = 4;
     static final int BRANCH = 10;
-    static final int BUFFER = -1; // >= 0 (fully sync), <= BRANCH (fully async) ; < 0 means unlimited
     static final int TOTAL = 1_000_000; // >= BRANCH
 }

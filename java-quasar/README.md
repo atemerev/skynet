@@ -1,6 +1,6 @@
 # Quasar Skynet Benchmark
 
-Skynet benchmark based on fibers and channels of the [Quasar library](http://docs.paralleluniverse.co/quasar) from [Parallel Universe](http://paralleluniverse.co).
+Skynet benchmark based on [Quasar](http://docs.paralleluniverse.co/quasar) fibers.
 
 ## Getting started
 

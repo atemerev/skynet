@@ -1,5 +1,6 @@
 import co.paralleluniverse.fibers.*;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
+import java.time.*;
 
 public class Skynet {
     static long skynet(long num, int size, int div) throws SuspendExecution, InterruptedException {
@@ -23,16 +24,14 @@ public class Skynet {
 
     public static void main(String[] args) throws Exception {
         for (int i = 0; i < RUNS; i++) {
-            long start = System.nanoTime();
+            Instant start = Instant.now();
 
-            long result = new Fiber<>(() -> skynet(0, TOTAL, BRANCH)).start().get();
+            long result = new Fiber<>(() -> skynet(0, 1_000_000, 10)).start().get();
 
-            long elapsed = (System.nanoTime() - start) / 1_000_000;
-            System.out.println((i + 1) + ": " + result + " (" + elapsed + " ms)");
+            Duration elapsed = Duration.between(start, Instant.now());
+            System.out.println((i + 1) + ": " + result + " (" + elapsed.toMillis() + " ms)");
         }
     }
 
     static final int RUNS = 4;
-    static final int BRANCH = 10;
-    static final int TOTAL = 1_000_000; // >= BRANCH
 }

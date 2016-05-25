@@ -21,6 +21,7 @@ until reaching the root actor. (The answer should be 499999500000).
 - Go: 243 ms.
 - F# Mono MailboxProcessor: 1057 ms.
 - libmill: 10944 ms.
+- luajit (tarantool empl): 310 ms.
 - lua-tarantool: 1130 ms.
 - c-tarantool: 364 ms.
 - swift-venice: 17522 ms.
@@ -33,15 +34,6 @@ until reaching the root actor. (The answer should be 499999500000).
 - .NET Mono (TPL): 167 ms.
 - RxJava: 128 ms.
 - Node-bluebird (Promise) 201 ms / 154 ms (after warmup).
-
-## Results (**i7-4771**, Ubuntu 15.10): 
-
-- Scala/Akka: 1700-2700 ms
-- Haskell (GHC 7.10.3): 41-44 ms
-- Erlang (non-HIPE): 700-1100 ms
-- Erlang (HIPE): 2100-3500 ms
-- Go: 200-224 ms
-- LuaJit: 297 ms
 
 ## How to run
 

@@ -8,50 +8,32 @@ more actors, etc. until one million actors are created on the final level. Then,
 back its ordinal number (from 0 to 999999), which are summed on the previous level and sent back upstream,
 until reaching the root actor. (The answer should be 499999500000).
 
-## Results (on my shitty Macbook 12" '2015, **Core M**, OS X): 
+## Results (**i7-4770**, OS X 10.11.3): 
 
 ### Actors
 
-- Scala/Akka: 6379 ms. 
-- Erlang (non-HIPE): 4414 ms.
-- Erlang (HIPE): 3999 ms.
+- Scala/Akka: 1771 ms.
+- Erlang (non-HIPE): 930 ms.
 
 ### Coroutines / channels
 
-- Haskell (GHC 7.10.3): 6181 ms.
-- Go: 979 ms.
+- Haskell (GHC 7.10.3): 33 ms.
+- Go: 243 ms.
+- F# Mono MailboxProcessor: 1057 ms.
+- libmill: 10944 ms.
+- luajit (tarantool empl): 310 ms.
+- lua-tarantool: 1130 ms.
+- c-tarantool: 364 ms.
+- swift-venice: 17522 ms.
+- crystal: 248 ms.
+- rust: 450 ms.
 
 ### Futures / promises
 
-- .NET Core: 650 ms.
-- RxJava: 219 ms.
-
-## Results (**i7-4770**, Win8.1): 
-
-### Actors
-
-- Scala/Akka: 4419 ms
-- Erlang (non-HIPE): 1700 ms.
-
-### Coroutines / channels
-
-- Haskell (GHC 7.10.3): 2820 ms.
-- Go: 629 ms.
-- F# MailboxProcessor: 756ms. (should be faster?..)
-
-### Futures / promises
-
-- .NET Core: Async (8 threads) 290 ms
-- Node-bluebird (Promise) 285ms / 195ms (after warmup)
-- .NET Full (TPL): 118 ms.
-
-## Results (**i7-4771**, Ubuntu 15.10): 
-
-- Scala/Akka: 1700-2700 ms
-- Haskell (GHC 7.10.3): 41-44 ms
-- Erlang (non-HIPE): 700-1100 ms
-- Erlang (HIPE): 2100-3500 ms
-- Go: 200-224 ms
+- .NET Core (Async): 421 ms.
+- .NET Mono (TPL): 167 ms.
+- RxJava: 128 ms.
+- Node-bluebird (Promise) 201 ms / 154 ms (after warmup).
 
 ## How to run
 
@@ -86,7 +68,7 @@ Install latest version of .NET Core
 
 Go to `dnx/`  
 `dotnet restore` (first time)  
-`dotnet run`
+`dotnet run --configuration Release`
 
 ### Haskell
 
@@ -126,6 +108,16 @@ Install the Java 8 SDK.
 Go to `java/`
 `./gradlew :run`
 
+### Swift - Venice (libmill based)
+
+Install [Swift Development Snapshot](https://swift.org/download/)
+
+Go to `swift-venice`
+```bash
+swift build -c release
+.build/release/swift-venice
+```
+
 ### Rust (with [coroutine-rs](https://github.com/rustcc/coroutine-rs))
 
 ```bash
@@ -133,3 +125,9 @@ cd ./rust-coroutine
 cargo build --release
 cargo run --release
 ```
+
+### LuaJIT
+
+Install luajit
+
+Run `luajit luajit/skynet.lua`

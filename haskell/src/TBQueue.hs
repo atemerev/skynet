@@ -1,31 +1,36 @@
--- this needs fixed still
-module Main (main) where
+{-# LANGUAGE BangPatterns #-}
 
-import Control.Concurrent (forkIO)
-import Control.Concurrent.Chan (Chan, newChan, writeChan, readChan)
--- import Control.Concurrent.Chan.Unagi (InChan, OutChan, newChan, writeChan, readChan)
--- import Control.Concurrent.STM (atomically)
--- import Control.Concurrent.STM.TBQueue (TBQueue, newTBQueueIO, writeTBQueue, readTBQueue)
-import Control.Monad (forM_, replicateM)
-import Data.Time.Clock (getCurrentTime, diffUTCTime)
+module TBQueue (run) where
 
-skynet :: TBQueue Int -> Int -> Int -> Int -> IO ()
-skynet q num size div
-    | size == 1 = atomically $ writeTBQueue q num
-    | otherwise = do
-          tbq <- newTBQueueIO 1000001
-          forM_ [0..div-1] $ \i -> do
-              let subNum  = num + i * sizeDiv
-                  sizeDiv = size `quot` div
-              forkIO $ skynet tbq subNum sizeDiv div
-          sum <- atomically $ sum <$> replicateM div (readTBQueue tbq)
-          atomically $ writeTBQueue q sum
+import Control.Concurrent             (forkIO)
+import Control.Concurrent.STM         (atomically)
+import Control.Concurrent.STM.TBQueue (TBQueue, newTBQueueIO, writeTBQueue, readTBQueue)
+import Control.Monad                  (forM_, replicateM)
+import Data.Time.Clock                (getCurrentTime, diffUTCTime)
 
-main :: IO ()
-main = do
-    tbq <- newTBQueueIO 1000001
+children = 10
+
+skynet :: TBQueue Int -> Int -> Int -> IO ()
+skynet q    0 !num = atomically $ writeTBQueue q num
+skynet q !lvl !num = let
+    !numFirst = num      * children
+    !numLast  = numFirst + children - 1
+    !lvl1     = lvl - 1
+    in do
+        tbq <- newTBQueueIO 11
+        forM_ [numFirst..numLast] $ forkIO . skynet tbq lvl1
+        sum <- atomically $ sum <$> replicateM children (readTBQueue tbq)
+        atomically $ writeTBQueue q sum
+
+run :: IO ()
+run = do
     start  <- getCurrentTime
-    _      <- forkIO $ skynet tbq 1 1000000 10
+    tbq <- newTBQueueIO 11
+    _      <- forkIO $ skynet tbq 6 0
     result <- atomically $ readTBQueue tbq
     end    <- getCurrentTime
-    putStrLn $ concat ["Result: ", show result, " in ", show (diffUTCTime end start)]
+    putStrLn $ concat [ "Result: "
+                      , show result
+                      , " in "
+                      , show $ diffUTCTime end start
+                      ]

@@ -1,22 +1,18 @@
 -module(skynet).
 -export([skynet/4, skynet/2]).
-
+skynet(Parent, Num, 1, _) ->
+  Parent ! Num;
 skynet(Parent, Num, Size, Div) ->
-  case Size of
-    1 ->
-      Parent ! Num;
-    T when T > 1 ->
-      NewSize = Size div Div,
-      lists:foreach(fun(X) -> spawn(skynet, skynet, [self(), Num + X * NewSize, NewSize, Div]) end, lists:seq(0, Div - 1))
-  end,
+  NewSize = Size div Div,
+  lists:foreach(fun(X) -> spawn(skynet, skynet, [self(), Num + X * NewSize, NewSize, Div]) end, lists:seq(0, Div - 1)),
   process_sum(Parent, Div, 0, 0).
 
 process_sum(Parent, Div, Received, Total) ->
   receive
     N ->
-      case Received of
-        X when X < Div - 1 -> process_sum(Parent, Div, Received + 1, Total + N);
-        X -> Parent ! Total + N
+      if
+        Received < Div - 1 -> process_sum(Parent, Div, Received + 1, Total + N);
+        true -> Parent ! Total + N
       end
   end.
 

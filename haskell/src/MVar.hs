@@ -2,38 +2,43 @@
 
 module MVar (run) where
 
-import Control.Concurrent (forkIO)
+import Control.Concurrent      (forkIO)
 import Control.Concurrent.MVar (MVar, newEmptyMVar, putMVar, takeMVar)
-import Control.Monad (forM)
-import Data.Time.Clock (getCurrentTime, diffUTCTime)
+import Control.Monad           (forM, foldM)
+import Data.Time.Clock         (getCurrentTime, diffUTCTime)
 
-skynet :: MVar Int -> Int -> Int -> Int -> IO ()
-skynet c !num !size div
-    | size == 1 = putMVar c num
-    | otherwise = do
-        rcs <- forM [0..div-1] (\i -> do
-            rc <- newEmptyMVar
-            let subNum  = num + i * sizeDiv
-                sizeDiv = size `quot` div
-            _ <- forkIO (skynet rc subNum sizeDiv div)
-            return rc )
-        result <- loop1 rcs 0
-        putMVar c result
+children = 10
 
-loop1 :: [MVar Int] -> Int -> IO Int
-loop1  []      !n = return n
-loop1 (rc:rcs) !n = do
+plus1 :: Int -> MVar Int -> IO Int
+plus1 !n !rc = do
     n' <- takeMVar rc
-    loop1 rcs (n + n')
+    return $ n + n'
+
+forkSkynet :: Int -> Int -> IO (MVar Int)
+forkSkynet !lvl !num = do
+    rc <- newEmptyMVar
+    _  <- forkIO $ skynet rc lvl num
+    return rc
+
+skynet :: MVar Int -> Int -> Int -> IO ()
+skynet c    0 !num = putMVar c num
+skynet c !lvl !num = let
+    !numFirst = num      * children
+    !numLast  = numFirst + children - 1
+    !lvl1     = lvl - 1
+    in do
+        rcs <- forM [numFirst..numLast] $ forkSkynet lvl1
+        result <- foldM plus1 0 rcs
+        putMVar c result
 
 run :: IO ()
 run = do
-    c      <- newEmptyMVar
     start  <- getCurrentTime
-    _      <- forkIO (skynet c 1 1000000 10)
+    c      <- forkSkynet 6 0
     result <- takeMVar c
     end    <- getCurrentTime
     putStrLn $ concat [ "Result: "
                       , show result
                       , " in "
-                      , show (diffUTCTime end start) ]
+                      , show $ diffUTCTime end start
+                      ]

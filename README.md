@@ -16,10 +16,11 @@ until reaching the root actor. (The answer should be 499999500000).
 - Erlang (non-HIPE): 4414 ms.
 - Erlang (HIPE): 3999 ms.
 
-### Coroutines / channels
+### Coroutines / fibers / channels
 
 - Haskell (GHC 7.10.3): 6181 ms.
 - Go: 979 ms.
+- Quasar fibers and channels (Java 8): TODO
 
 ### Futures / promises
 
@@ -33,11 +34,12 @@ until reaching the root actor. (The answer should be 499999500000).
 - Scala/Akka: 4419 ms
 - Erlang (non-HIPE): 1700 ms.
 
-### Coroutines / channels
+### Coroutines / fibers / channels
 
 - Haskell (GHC 7.10.3): 2820 ms.
 - Go: 629 ms.
 - F# MailboxProcessor: 756ms. (should be faster?..)
+- Quasar fibers and channels (Java 8): TODO
 
 ### Futures / promises
 
@@ -60,6 +62,13 @@ until reaching the root actor. (The answer should be 499999500000).
 Install latest Scala and SBT. 
 
 Go to `scala/`, then run `sbt compile run`.
+
+### Java/Quasar
+
+Install the Java 8 SDK.
+
+Go to `java-quasar/`
+`./gradlew`
 
 ### Go
 

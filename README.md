@@ -110,6 +110,11 @@ Install node.js
 
 in `node-bluebird/` run `npm install` then `node skynet`
 
+### CoffeeScript (CSP)
+
+Install node.js
+in `coffee/` run `npm install` then `npm run bench`
+
 ### FSharp
 
 Install FSharp Interactive

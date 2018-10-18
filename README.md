@@ -149,3 +149,10 @@ cargo run --release
 Install luajit
 
 Run `luajit luajit/skynet.lua`
+
+### Scheme/Guile Fibers
+
+Install Guile, Guile fibers, and wisp; for example via `guix package -i guile guile-fibers guile-wisp`.
+
+Go to `guile-fibers`
+`./skynet.scm`

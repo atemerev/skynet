@@ -77,6 +77,12 @@ Install latest Go compiler/runtime.
 
 In `go/`, run `go run skynet.go`.
 
+### Pony
+
+Install latest Pony compiler.
+
+In `pony/`, run `ponyc -b skynet && ./skynet`.
+
 ### Erlang
 
 Install latest Erlang runtime.

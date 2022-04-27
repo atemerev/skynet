@@ -1,6 +1,3 @@
-[![Issue Stats](http://issuestats.com/github/atemerev/skynet/badge/pr   )](http://issuestats.com/github/atemerev/skynet)
-[![Issue Stats](http://issuestats.com/github/atemerev/skynet/badge/issue)](http://issuestats.com/github/atemerev/skynet)
-
 # Skynet 1M concurrency microbenchmark
 
 Creates an actor (goroutine, whatever), which spawns 10 new actors, each of them spawns 10 

@@ -1,6 +1,8 @@
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 apply plugin: 'application'
+sourceCompatibility = 21
+targetCompatibility = 21
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -11,7 +13,7 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    compile 'io.reactivex:rxjava:1.1.1'
+    implementation 'io.reactivex:rxjava:1.3.8'
 }
 
 mainClassName = "Skynet"

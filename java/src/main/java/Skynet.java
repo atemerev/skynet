@@ -8,10 +8,16 @@ public class Skynet {
     // Allow each strategy to warm itself up to generate more consistent results.
     Streams streams = new Streams();
     Rx rx = new Rx();
+    VirtualThreads virtualThreads = new VirtualThreads();
 
     System.out.println("Streams");
     System.out.println("-------");
     streams.run();
+    System.out.println();
+
+    System.out.println("VirtualThreads");
+    System.out.println("-------");
+    virtualThreads.run();
     System.out.println();
 
     System.out.println("RxJava");

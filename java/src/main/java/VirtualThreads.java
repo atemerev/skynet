@@ -12,16 +12,19 @@ public class VirtualThreads {
     // Warm up to get more consistent results when timing.
     IntStream.of(0, 5)
         .forEach(i -> {
+          skynetFixedWorkStealingPool();
           skynetVirtual();
-          skynetPool();
+          skynetCachedPool();
+          skynetPlatform(); // dies with OOM at 100k
         });
   }
 
   public static void run() {
 
-    Skynet.time("Virtual", () -> skynetVirtual());
-    Skynet.time("Cached Pool", () -> skynetPool());
-    // Skynet.time("Platform", () -> skynetPlatform()); // dies with OOM
+    Skynet.time("Fixed Work Stealing Pool", () -> skynetFixedWorkStealingPool());
+    Skynet.time("Virtual Thread per task", () -> skynetVirtual());
+    Skynet.time("Cached Pool", () -> skynetCachedPool());
+    Skynet.time("Platform Thread per task, 1/100th size", () -> skynetPlatform()); // dies with OOM at 100k threads
   }
 
   private static Long skynetVirtual() {
@@ -33,7 +36,16 @@ public class VirtualThreads {
     }
   }
 
-  private static Long skynetPool() {
+  private static Long skynetFixedWorkStealingPool() {
+    try (var executor = Executors.newWorkStealingPool()) {
+      Future<Long> result = executor.submit(() -> skynet(0L, 1000000, 10, executor));
+      return result.get();
+    } catch (InterruptedException | ExecutionException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static Long skynetCachedPool() {
     try (var executor = Executors.newCachedThreadPool()) {
       Future<Long> result = executor.submit(() -> skynet(0L, 1000000, 10, executor));
       return result.get();
@@ -44,7 +56,7 @@ public class VirtualThreads {
 
   private static Long skynetPlatform() {
     try (var executor = Executors.newThreadPerTaskExecutor(Executors.defaultThreadFactory())) {
-      Future<Long> result = executor.submit(() -> skynet(0L, 1000000, 10, executor));
+      Future<Long> result = executor.submit(() -> skynet(0L, 10000, 10, executor));
       return result.get();
     } catch (InterruptedException | ExecutionException e) {
       throw new RuntimeException(e);

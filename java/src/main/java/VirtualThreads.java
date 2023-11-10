@@ -12,18 +12,20 @@ public class VirtualThreads {
     // Warm up to get more consistent results when timing.
     IntStream.of(0, 5)
         .forEach(i -> {
-          skynetFixedWorkStealingPool();
-          skynetVirtual();
           skynetCachedPool();
+          skynetWorkStealingPool();
+          skynetVirtual();
           skynetPlatform(); // dies with OOM at 100k
         });
   }
 
   public static void run() {
 
-    Skynet.time("Fixed Work Stealing Pool", () -> skynetFixedWorkStealingPool());
     Skynet.time("Virtual Thread per task", () -> skynetVirtual());
+    Skynet.time("Work Stealing Pool, before cached pool", () -> skynetWorkStealingPool());
     Skynet.time("Cached Pool", () -> skynetCachedPool());
+    Skynet.time("Work Stealing Pool, in cached pool cooldown", () -> skynetWorkStealingPool());
+    Skynet.time("Work Stealing Pool, again", () -> skynetWorkStealingPool());
     Skynet.time("Platform Thread per task, 1/100th size", () -> skynetPlatform()); // dies with OOM at 100k threads
   }
 
@@ -36,7 +38,7 @@ public class VirtualThreads {
     }
   }
 
-  private static Long skynetFixedWorkStealingPool() {
+  private static Long skynetWorkStealingPool() {
     try (var executor = Executors.newWorkStealingPool()) {
       Future<Long> result = executor.submit(() -> skynet(0L, 1000000, 10, executor));
       return result.get();
